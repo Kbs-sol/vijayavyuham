@@ -1,12 +1,26 @@
-import { Hono } from 'hono'
-import { renderer } from './renderer'
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { Bindings } from './types';
+import publicRoutes from './routes/public';
+import publicApi from './routes/public-api';
+import adminApi from './routes/admin-api';
+import studio from './routes/studio';
 
-const app = new Hono()
+const app = new Hono<{ Bindings: Bindings }>();
 
-app.use(renderer)
+// CORS for API
+app.use('/api/*', cors());
 
-app.get('/', (c) => {
-  return c.render(<h1>Hello!</h1>)
-})
+// Public API (enquiry form)
+app.route('/api', publicApi);
 
-export default app
+// Admin API (auth + CRUD)
+app.route('/api/admin', adminApi);
+
+// Admin studio (login + dashboard)
+app.route('/studio', studio);
+
+// Public website (last, catches page routes + SEO files)
+app.route('/', publicRoutes);
+
+export default app;
