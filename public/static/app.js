@@ -55,6 +55,17 @@
   const toggle = document.getElementById('mobileToggle');
   const navLinks = document.getElementById('navLinks');
   const backdrop = document.getElementById('navBackdrop');
+  // CRITICAL: the drawer lives inside the fixed <header>, which gets
+  // `backdrop-filter` when scrolled — that creates a new stacking/containing
+  // context and makes the fixed drawer render transparent & un-clickable.
+  // Move the drawer + backdrop to be direct children of <body> so they
+  // escape the header context entirely.
+  if (navLinks && navLinks.parentElement !== document.body) {
+    document.body.appendChild(navLinks);
+  }
+  if (backdrop && backdrop.parentElement !== document.body) {
+    document.body.appendChild(backdrop);
+  }
   function setMenu(open) {
     if (!navLinks) return;
     navLinks.classList.toggle('open', open);

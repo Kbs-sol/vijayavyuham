@@ -38,7 +38,7 @@ export interface Store {
 }
 
 export type Collection =
-  | 'services' | 'blogs' | 'gallery' | 'team' | 'testimonials' | 'enquiries';
+  | 'services' | 'blogs' | 'gallery' | 'team' | 'testimonials' | 'enquiries' | 'faqs';
 
 export interface ListOpts {
   where?: Row;                 // equality filters
@@ -202,6 +202,7 @@ class OfflineStore implements Store {
       services: deepClone(SEED.services as unknown as Row[]),
       blogs: deepClone(SEED.blogs as unknown as Row[]),
       testimonials: deepClone(SEED.testimonials as unknown as Row[]),
+      faqs: deepClone((SEED as any).faqs ? (SEED as any).faqs as Row[] : []),
       gallery: [],
       team: [],
       enquiries: [],
@@ -210,6 +211,7 @@ class OfflineStore implements Store {
       services: maxId(this.data.services),
       blogs: maxId(this.data.blogs),
       testimonials: maxId(this.data.testimonials),
+      faqs: maxId(this.data.faqs),
       gallery: 0,
       team: 0,
       enquiries: 0,

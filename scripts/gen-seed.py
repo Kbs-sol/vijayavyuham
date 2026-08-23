@@ -51,7 +51,7 @@ def conv(v):
     return v
 
 raw={}
-for table in ['settings','services','testimonials','blogs']:
+for table in ['settings','services','testimonials','blogs','faqs']:
     cols, body = grab_block(sql, table)
     raw[table]=[{c:conv(f) for c,f in zip(cols, split_fields(r))} for r in split_rows(body)]
 
@@ -67,8 +67,9 @@ def norm(rows, defaults, idx_from=1):
 services=norm(raw['services'], {'slug':'','sort_order':0,'icon':'fa-chart-line','title_en':'','short_en':'','description_en':'','title_te':'','short_te':'','description_te':'','title_hi':'','short_hi':'','description_hi':'','features':'[]','image_url':None,'media_url':None,'is_active':1})
 testimonials=norm(raw['testimonials'], {'author_name':'','author_role':'','photo_url':None,'sort_order':0,'quote_en':'','quote_te':'','quote_hi':'','is_active':1})
 blogs=norm(raw['blogs'], {'slug':'','category':'General','cover_image':None,'author':'Vijayavyuham Team','title_en':'','excerpt_en':'','content_en':'','title_te':'','excerpt_te':'','content_te':'','title_hi':'','excerpt_hi':'','content_hi':'','meta_title':'','meta_description':'','keywords':'','is_published':1,'published_at':''})
+faqs=norm(raw['faqs'], {'sort_order':0,'category':'General','question_en':'','answer_en':'','question_te':'','answer_te':'','question_hi':'','answer_hi':'','is_active':1})
 
-bundle={'settings':settings,'services':services,'testimonials':testimonials,'blogs':blogs}
+bundle={'settings':settings,'services':services,'testimonials':testimonials,'blogs':blogs,'faqs':faqs}
 js  = "// AUTO-GENERATED from seed.sql — default content used by the offline store\n"
 js += "// (when Supabase is NOT configured) and to seed a fresh Supabase database.\n"
 js += "// Regenerate: python3 scripts/gen-seed.py\n\n"

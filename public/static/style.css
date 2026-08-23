@@ -426,35 +426,41 @@ p { margin: 0 0 1rem; color: var(--text-dim); }
   .lang-seg-group { padding: 2px; gap: 1px; }
   .lang-seg { padding: 8px 10px; font-size: .9rem; min-height: 36px; }
 
-  /* Slide-in mobile drawer */
+  /* Slide-in mobile drawer — SOLID panel, escapes the header stacking context */
   .nav-links {
-    display: flex; position: fixed; top: 0; right: 0;
-    height: 100dvh; width: 82%; max-width: 340px;
-    background: var(--black-2); border-left: 1px solid var(--gold-line);
+    display: flex; position: fixed; top: 0; right: 0; bottom: 0;
+    height: 100dvh; width: min(86vw, 360px);
+    /* Fully opaque solid fill (no see-through) */
+    background: #0d0d0d;
+    border-left: 1px solid var(--gold-line);
     flex-direction: column; align-items: stretch;
-    padding: 88px 26px calc(30px + env(safe-area-inset-bottom)) 26px;
-    gap: 4px; transition: transform .35s cubic-bezier(.4,0,.2,1);
-    transform: translateX(105%); z-index: 150; overflow-y: auto;
-    box-shadow: -20px 0 60px rgba(0,0,0,.5);
+    padding: 84px 24px calc(28px + env(safe-area-inset-bottom)) 24px;
+    gap: 2px; transition: transform .35s cubic-bezier(.4,0,.2,1);
+    transform: translateX(105%);
+    z-index: 1002; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    box-shadow: -24px 0 70px rgba(0,0,0,.7);
+    visibility: hidden;                 /* not focusable/tappable while closed */
   }
-  .nav-links.open { transform: translateX(0); }
-  .nav-links li { width: 100%; }
+  .nav-links.open { transform: translateX(0); visibility: visible; }
+  .nav-links li { width: 100%; list-style: none; }
   .nav-links a {
-    display: block; width: 100%; padding: 15px 4px; font-size: .95rem;
-    border-bottom: 1px solid var(--gold-line); letter-spacing: 1px;
+    display: block; width: 100%; padding: 16px 4px; font-size: 1rem;
+    color: var(--text); border-bottom: 1px solid var(--gold-line);
+    letter-spacing: 1px; text-transform: uppercase;
   }
   .nav-links a::after { display: none; }
+  .nav-links a:active { color: var(--gold-bright); }
   .nav-links a.active { color: var(--gold-bright); }
-  .mobile-only-cta { margin-top: 14px; }
+  .mobile-only-cta { margin-top: 16px; }
   .mobile-only-cta a {
     background: linear-gradient(120deg, var(--gold), var(--gold-bright));
-    color: #1a1206 !important; text-align: center; border-radius: 4px;
-    border-bottom: none !important; font-weight: 600;
+    color: #1a1206 !important; text-align: center; border-radius: 6px;
+    border-bottom: none !important; font-weight: 700; padding: 15px 4px;
   }
 
   /* Language selector inside the drawer */
   .drawer-lang {
-    display: block; margin-top: 22px; padding-top: 20px;
+    display: block; margin-top: 20px; padding-top: 18px;
     border-top: 1px solid var(--gold-line);
   }
   .drawer-lang-label {
@@ -462,16 +468,20 @@ p { margin: 0 0 1rem; color: var(--text-dim); }
     color: var(--gold); margin-bottom: 12px; font-weight: 600;
   }
   .drawer-lang-label i { margin-right: 6px; }
-  .drawer-lang .lang-seg-group { display: flex; width: 100%; }
-  .drawer-lang .lang-seg { flex: 1; padding: 11px 6px; font-size: 1rem; min-height: 44px; }
+  .drawer-lang .lang-seg-group { display: flex; width: 100%; background: rgba(201,162,75,.06); }
+  .drawer-lang .lang-seg { flex: 1; padding: 12px 6px; font-size: 1rem; min-height: 46px; }
 
-  /* Drawer backdrop */
+  /* Drawer backdrop — dim only, light blur, sits just under the drawer */
   .nav-backdrop {
-    position: fixed; inset: 0; background: rgba(0,0,0,.6);
-    backdrop-filter: blur(2px); z-index: 149; opacity: 0;
-    pointer-events: none; transition: opacity .3s ease;
+    position: fixed; inset: 0; background: rgba(0,0,0,.55);
+    -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+    z-index: 1001; opacity: 0; visibility: hidden;
+    pointer-events: none; transition: opacity .3s ease, visibility .3s ease;
   }
-  .nav-backdrop.show { opacity: 1; pointer-events: auto; }
+  .nav-backdrop.show { opacity: 1; visibility: visible; pointer-events: auto; }
+
+  /* Keep the hamburger tappable ABOVE the drawer so it can also close */
+  .mobile-toggle { position: relative; z-index: 1003; }
 
   /* --- Single-column content --- */
   .services-grid, .blog-grid, .gallery-grid, .feature-grid, .team-grid, .footer-grid { grid-template-columns: 1fr; }

@@ -1,6 +1,6 @@
 // AUTO-GENERATED from seed.sql — default content used by the offline store
 // (when Supabase is NOT configured) and to seed a fresh Supabase database.
-// Regenerate: see scripts/gen-seed.py
+// Regenerate: python3 scripts/gen-seed.py
 
 export const SEED = {
   "settings": {
@@ -380,6 +380,170 @@ export const SEED = {
       "keywords": "WhatsApp campaign Telangana, IVR bulk calls Andhra Pradesh, AI video messaging politics, digital voter outreach Telugu, Vijayavyuham",
       "is_published": 1,
       "published_at": "2025-11-25 09:00:00"
+    },
+    {
+      "id": 4,
+      "slug": "election-survey-methodology-telugu-states-explained",
+      "category": "Research",
+      "cover_image": null,
+      "author": "Vijayavyuham Team",
+      "title_en": "How a Professional Election Survey Actually Works in the Telugu States",
+      "excerpt_en": "Not all surveys are equal. Here is what a rigorous, unbiased political survey looks like in Telangana and Andhra Pradesh — and how to spot one that will mislead you.",
+      "content_en": "Every serious campaign wants a survey, but very few understand what separates a survey that predicts reality from one that quietly misleads. In the Telugu states, where constituencies are diverse across caste, community, urban and rural lines, methodology is everything.\n\nA trustworthy election survey begins with sampling. The sample must mirror the real constituency — the right proportion of communities, age groups, genders, and urban versus rural voters. A survey that over-samples the easy-to-reach urban voter will systematically overstate one kind of opinion and understate another. At Vijayavyuham we design samples specifically around the demographic map of each Telugu constituency.\n\nThe second pillar is the questionnaire. Questions must be neutral, in clear Telugu, and ordered so that early questions do not bias later answers. Leading questions — the kind that flatter a candidate — produce comforting numbers and losing campaigns.\n\nThe third pillar is honest analysis. Raw responses are weighted back to the true population, undecided voters are analysed rather than ignored, and results are broken down booth-cluster by booth-cluster so the campaign knows exactly where it stands. A number without a breakdown is not intelligence — it is decoration.\n\nWhen you commission a survey, ask three questions: How was the sample built? Can I see the questionnaire? How will results be broken down? If a firm cannot answer clearly, the survey will cost you far more than its price.",
+      "title_te": "తెలుగు రాష్ట్రాల్లో ప్రొఫెషనల్ ఎన్నికల సర్వే నిజంగా ఎలా పనిచేస్తుంది",
+      "excerpt_te": "అన్ని సర్వేలు ఒకేలా ఉండవు. తెలంగాణ మరియు ఆంధ్రప్రదేశ్‌లో కఠినమైన, నిష్పక్షపాత రాజకీయ సర్వే ఎలా ఉంటుందో ఇక్కడ ఉంది.",
+      "content_te": "ప్రతి తీవ్రమైన ప్రచారం సర్వే కోరుకుంటుంది, కానీ వాస్తవాన్ని అంచనా వేసే సర్వేను తప్పుదారి పట్టించే సర్వే నుండి ఏది వేరు చేస్తుందో చాలా తక్కువ మందికి తెలుసు. తెలుగు రాష్ట్రాల్లో పద్ధతి అన్నీ.\n\nనమ్మదగిన ఎన్నికల సర్వే నమూనాతో ప్రారంభమవుతుంది. నమూనా నిజమైన నియోజకవర్గాన్ని ప్రతిబింబించాలి. విజయవ్యూహంలో మేము ప్రతి తెలుగు నియోజకవర్గ జనాభా మ్యాప్ చుట్టూ నమూనాలను రూపొందిస్తాము.\n\nరెండవ స్తంభం ప్రశ్నావళి. ప్రశ్నలు తటస్థంగా, స్పష్టమైన తెలుగులో ఉండాలి. మూడవ స్తంభం నిజాయితీ విశ్లేషణ — ఫలితాలు బూత్-క్లస్టర్ వారీగా విభజించబడతాయి.",
+      "title_hi": "तेलुगु राज्यों में एक पेशेवर चुनाव सर्वेक्षण वास्तव में कैसे काम करता है",
+      "excerpt_hi": "सभी सर्वेक्षण समान नहीं होते। यहां बताया गया है कि तेलंगाना और आंध्र प्रदेश में एक कठोर, निष्पक्ष राजनीतिक सर्वेक्षण कैसा दिखता है।",
+      "content_hi": "हर गंभीर अभियान एक सर्वेक्षण चाहता है, लेकिन बहुत कम लोग समझते हैं कि वास्तविकता की भविष्यवाणी करने वाले सर्वेक्षण को गुमराह करने वाले सर्वेक्षण से क्या अलग करता है। तेलुगु राज्यों में, कार्यप्रणाली ही सब कुछ है।\n\nएक भरोसेमंद चुनाव सर्वेक्षण नमूने से शुरू होता है। नमूना वास्तविक निर्वाचन क्षेत्र को प्रतिबिंबित करना चाहिए। विजयव्यूहम में हम प्रत्येक तेलुगु निर्वाचन क्षेत्र के जनसांख्यिकीय मानचित्र के आसपास नमूने डिज़ाइन करते हैं।\n\nदूसरा स्तंभ प्रश्नावली है। प्रश्न तटस्थ, स्पष्ट तेलुगु में होने चाहिए। तीसरा स्तंभ ईमानदार विश्लेषण है।",
+      "meta_title": "How a Professional Election Survey Works in Telangana & Andhra Pradesh | Vijayavyuham",
+      "meta_description": "Learn how rigorous political survey methodology — sampling, neutral questionnaires and honest analysis — delivers accurate voter intelligence in the Telugu states.",
+      "keywords": "election survey Telangana, political survey methodology Andhra Pradesh, voter opinion poll Telugu states, constituency survey, Vijayavyuham",
+      "is_published": 1,
+      "published_at": "2025-12-02 09:00:00"
+    },
+    {
+      "id": 5,
+      "slug": "choosing-election-campaign-manager-telangana-andhra",
+      "category": "Strategy",
+      "cover_image": null,
+      "author": "Vijayavyuham Team",
+      "title_en": "How to Choose the Right Election Campaign Management Company",
+      "excerpt_en": "Choosing a campaign partner is one of the most important decisions a candidate makes. Here are the questions every candidate in Telangana and Andhra Pradesh should ask first.",
+      "content_en": "A candidate can only run one campaign in an election cycle, so the choice of campaign management partner is among the highest-stakes decisions they will make. Yet many candidates pick a firm on the strength of a slick pitch rather than a clear method. Here is how to choose well.\n\nFirst, ask about method, not just promises. Any firm can promise a win. Ask instead: what is your research process? How do you decide where to spend the campaign budget? How will you measure whether the plan is working while there is still time to change it? A firm with a clear, repeatable method is far safer than one selling confidence alone.\n\nSecond, look for local depth. The Telugu states are not a generic market. Winning requires fluency in local issues, community dynamics, language and the specific texture of each constituency. A partner who understands Telangana and Andhra Pradesh from the ground up will out-perform a national firm parachuting in with a template.\n\nThird, insist on transparency and honest reporting. You want a partner who tells you the uncomfortable truth early — a soft booth, a weak message, a rising rival — not one who only reports good news. The value of a consultancy is in the corrections it makes possible.\n\nFinally, judge on a small first engagement. A focused survey or a booth-mapping exercise reveals a firm's quality quickly and at low risk. Vijayavyuham is happy to start exactly this way — earning trust through results before scaling to a full campaign.",
+      "title_te": "సరైన ఎన్నికల ప్రచార నిర్వహణ సంస్థను ఎలా ఎంచుకోవాలి",
+      "excerpt_te": "ప్రచార భాగస్వామిని ఎంచుకోవడం అభ్యర్థి చేసే అత్యంత ముఖ్యమైన నిర్ణయాలలో ఒకటి. తెలంగాణ మరియు ఆంధ్రప్రదేశ్‌లోని ప్రతి అభ్యర్థి మొదట అడగవలసిన ప్రశ్నలు ఇక్కడ ఉన్నాయి.",
+      "content_te": "ఒక అభ్యర్థి ఎన్నికల చక్రంలో ఒకే ప్రచారాన్ని నిర్వహించగలరు, కాబట్టి ప్రచార నిర్వహణ భాగస్వామి ఎంపిక అత్యంత కీలకమైన నిర్ణయాలలో ఒకటి.\n\nమొదట, వాగ్దానాల గురించి కాదు, పద్ధతి గురించి అడగండి. మీ పరిశోధన ప్రక్రియ ఏమిటి? రెండవది, స్థానిక లోతును చూడండి. తెలుగు రాష్ట్రాలు ఒక సాధారణ మార్కెట్ కాదు.\n\nమూడవది, పారదర్శకత మరియు నిజాయితీ నివేదికను కోరండి. చివరగా, చిన్న మొదటి నిమగ్నతపై తీర్పు ఇవ్వండి. విజయవ్యూహం సరిగ్గా ఇలా ప్రారంభించడానికి సంతోషిస్తుంది.",
+      "title_hi": "सही चुनाव अभियान प्रबंधन कंपनी कैसे चुनें",
+      "excerpt_hi": "एक अभियान भागीदार चुनना एक उम्मीदवार द्वारा किए जाने वाले सबसे महत्वपूर्ण निर्णयों में से एक है। यहां वे प्रश्न हैं जो तेलंगाना और आंध्र प्रदेश के हर उम्मीदवार को पहले पूछने चाहिए।",
+      "content_hi": "एक उम्मीदवार एक चुनाव चक्र में केवल एक अभियान चला सकता है, इसलिए अभियान प्रबंधन भागीदार का चुनाव सबसे महत्वपूर्ण निर्णयों में से एक है।\n\nपहला, वादों के बारे में नहीं, पद्धति के बारे में पूछें। आपकी शोध प्रक्रिया क्या है? दूसरा, स्थानीय गहराई देखें। तेलुगु राज्य एक सामान्य बाजार नहीं हैं।\n\nतीसरा, पारदर्शिता और ईमानदार रिपोर्टिंग पर जोर दें। अंत में, एक छोटे पहले जुड़ाव पर निर्णय लें। विजयव्यूहम ठीक इसी तरह शुरू करने में खुश है।",
+      "meta_title": "How to Choose the Right Election Campaign Management Company | Vijayavyuham",
+      "meta_description": "The key questions every candidate in Telangana and Andhra Pradesh should ask before hiring an election campaign management company. Choose method over promises.",
+      "keywords": "election campaign management company Telangana, choose campaign consultant Andhra Pradesh, political campaign partner Telugu states, Vijayavyuham",
+      "is_published": 1,
+      "published_at": "2025-12-09 09:00:00"
+    }
+  ],
+  "faqs": [
+    {
+      "id": 1,
+      "sort_order": 1,
+      "category": "General",
+      "question_en": "What does a political campaign consultancy like Vijayavyuham actually do?",
+      "answer_en": "Vijayavyuham is a full-service political campaign consultancy for Telangana and Andhra Pradesh. We handle voter research and surveys, constituency data analysis, booth-level management, campaign messaging in Telugu, Hindi and English, social media and digital outreach, IVR bulk calling, WhatsApp campaigns, and AI-personalised video messaging. In short, we turn ground-level voter insight into a disciplined, winnable campaign plan.",
+      "question_te": "విజయవ్యూహం వంటి రాజకీయ ప్రచార కన్సల్టెన్సీ నిజంగా ఏమి చేస్తుంది?",
+      "answer_te": "విజయవ్యూహం తెలంగాణ మరియు ఆంధ్రప్రదేశ్‌ల కోసం పూర్తి-స్థాయి రాజకీయ ప్రచార కన్సల్టెన్సీ. మేము ఓటర్ పరిశోధన మరియు సర్వేలు, నియోజకవర్గ డేటా విశ్లేషణ, బూత్-స్థాయి నిర్వహణ, తెలుగు, హిందీ, ఇంగ్లీష్‌లో ప్రచార సందేశం, సోషల్ మీడియా, IVR కాల్స్, వాట్సాప్ ప్రచారాలు మరియు AI వీడియో సందేశాలను నిర్వహిస్తాము.",
+      "question_hi": "विजयव्यूहम जैसी राजनीतिक अभियान कंसल्टेंसी वास्तव में क्या करती है?",
+      "answer_hi": "विजयव्यूहम तेलंगाना और आंध्र प्रदेश के लिए एक पूर्ण-सेवा राजनीतिक अभियान कंसल्टेंसी है। हम मतदाता अनुसंधान और सर्वेक्षण, निर्वाचन क्षेत्र डेटा विश्लेषण, बूथ-स्तरीय प्रबंधन, तेलुगु, हिंदी और अंग्रेजी में अभियान संदेश, सोशल मीडिया, IVR कॉल, व्हाट्सएप अभियान और AI वीडियो संदेश संभालते हैं।",
+      "is_active": 1
+    },
+    {
+      "id": 2,
+      "sort_order": 2,
+      "category": "General",
+      "question_en": "Which regions and elections does Vijayavyuham serve?",
+      "answer_en": "We specialise in Telangana and Andhra Pradesh and understand the ground realities of the Telugu states. We support Assembly (MLA), Lok Sabha (MP), municipal, corporation, ZPTC/MPTC and local body candidates, as well as parties running multi-constituency campaigns. Our research, messaging and field systems are built specifically for Telugu-speaking constituencies.",
+      "question_te": "విజయవ్యూహం ఏ ప్రాంతాలు మరియు ఎన్నికలకు సేవలందిస్తుంది?",
+      "answer_te": "మేము తెలంగాణ మరియు ఆంధ్రప్రదేశ్‌లలో ప్రత్యేకత కలిగి ఉన్నాము. అసెంబ్లీ (MLA), లోక్‌సభ (MP), మునిసిపల్, కార్పొరేషన్, ZPTC/MPTC మరియు స్థానిక సంస్థల అభ్యర్థులకు మేము మద్దతు ఇస్తాము.",
+      "question_hi": "विजयव्यूहम किन क्षेत्रों और चुनावों की सेवा करता है?",
+      "answer_hi": "हम तेलंगाना और आंध्र प्रदेश में विशेषज्ञ हैं। हम विधानसभा (विधायक), लोकसभा (सांसद), नगरपालिका, निगम, ZPTC/MPTC और स्थानीय निकाय उम्मीदवारों का समर्थन करते हैं।",
+      "is_active": 1
+    },
+    {
+      "id": 3,
+      "sort_order": 3,
+      "category": "Services",
+      "question_en": "How does data-driven voter research improve my chances of winning?",
+      "answer_en": "Instead of relying on guesswork, we measure what voters actually think — the top issues in each mandal, how the leadership is perceived, and which booths are safe, swing or at risk. This lets you invest your time, money and workers exactly where they change the result, rather than spreading effort thin. Evidence-led campaigns consistently outperform instinct-led ones in close races.",
+      "question_te": "డేటా ఆధారిత ఓటర్ పరిశోధన నా గెలుపు అవకాశాలను ఎలా మెరుగుపరుస్తుంది?",
+      "answer_te": "ఊహలపై ఆధారపడకుండా, ఓటర్లు నిజంగా ఏమనుకుంటున్నారో మేము కొలుస్తాము — ప్రతి మండలంలో ప్రధాన సమస్యలు, నాయకత్వం ఎలా భావించబడుతోంది, ఏ బూత్‌లు సురక్షితం లేదా ప్రమాదంలో ఉన్నాయి. ఇది మీ సమయం మరియు వనరులను సరైన చోట పెట్టుబడి పెట్టడానికి సహాయపడుతుంది.",
+      "question_hi": "डेटा-संचालित मतदाता अनुसंधान मेरी जीतने की संभावनाओं को कैसे बेहतर बनाता है?",
+      "answer_hi": "अनुमान पर निर्भर रहने के बजाय, हम मापते हैं कि मतदाता वास्तव में क्या सोचते हैं — प्रत्येक मंडल में शीर्ष मुद्दे, नेतृत्व की धारणा, और कौन से बूथ सुरक्षित या जोखिम में हैं। इससे आप अपना समय और संसाधन सही जगह लगा सकते हैं।",
+      "is_active": 1
+    },
+    {
+      "id": 4,
+      "sort_order": 4,
+      "category": "Services",
+      "question_en": "What is booth-level management and why does it matter?",
+      "answer_en": "A constituency is not one battle — it is hundreds of small ones. Booth-level management treats every polling booth as a unit of accountability: who is responsible for it, expected turnout, and which households are supporters, undecided or need follow-up. This is where close elections are actually won or lost, so a disciplined booth system is one of the highest-return investments a campaign can make.",
+      "question_te": "బూత్-స్థాయి నిర్వహణ అంటే ఏమిటి మరియు ఇది ఎందుకు ముఖ్యం?",
+      "answer_te": "ఒక నియోజకవర్గం ఒక యుద్ధం కాదు — ఇది వందల చిన్న యుద్ధాలు. బూత్-స్థాయి నిర్వహణ ప్రతి పోలింగ్ బూత్‌ను జవాబుదారీతన యూనిట్‌గా పరిగణిస్తుంది. దగ్గరి ఎన్నికలు ఇక్కడే గెలవబడతాయి.",
+      "question_hi": "बूथ-स्तरीय प्रबंधन क्या है और यह क्यों मायने रखता है?",
+      "answer_hi": "एक निर्वाचन क्षेत्र एक लड़ाई नहीं है — यह सैकड़ों छोटी लड़ाइयां हैं। बूथ-स्तरीय प्रबंधन प्रत्येक मतदान बूथ को जवाबदेही की इकाई मानता है। नज़दीकी चुनाव यहीं जीते या हारे जाते हैं।",
+      "is_active": 1
+    },
+    {
+      "id": 5,
+      "sort_order": 5,
+      "category": "Services",
+      "question_en": "Do you handle social media and WhatsApp campaigns in Telugu?",
+      "answer_en": "Yes. The Telugu voter lives on WhatsApp and social media, so we plan and run outreach specifically for Telugu audiences: organised WhatsApp broadcast networks, localised social media content, IVR bulk voice calls in Telugu, Hindi or English, and AI-personalised video messages that address communities and localities by name. Every message is tuned to land with the right person, in the right language, at the right moment.",
+      "question_te": "మీరు తెలుగులో సోషల్ మీడియా మరియు వాట్సాప్ ప్రచారాలను నిర్వహిస్తారా?",
+      "answer_te": "అవును. తెలుగు ఓటరు వాట్సాప్ మరియు సోషల్ మీడియాలో నివసిస్తారు, కాబట్టి మేము తెలుగు ప్రేక్షకుల కోసం ప్రత్యేకంగా ప్రచారాన్ని రూపొందిస్తాము — వాట్సాప్ నెట్‌వర్క్‌లు, స్థానిక కంటెంట్, IVR కాల్స్ మరియు AI వీడియో సందేశాలు.",
+      "question_hi": "क्या आप तेलुगु में सोशल मीडिया और व्हाट्सएप अभियान संभालते हैं?",
+      "answer_hi": "हां। तेलुगु मतदाता व्हाट्सएप और सोशल मीडिया पर रहता है, इसलिए हम तेलुगु दर्शकों के लिए विशेष रूप से आउटरीच की योजना बनाते हैं — व्हाट्सएप नेटवर्क, स्थानीय सामग्री, IVR कॉल और AI वीडियो संदेश।",
+      "is_active": 1
+    },
+    {
+      "id": 6,
+      "sort_order": 6,
+      "category": "Engagement",
+      "question_en": "When is the best time to hire a campaign consultancy?",
+      "answer_en": "The earlier the better. The most successful campaigns engage 12 to 18 months before polling so there is time for baseline research, message development, organisation building and mid-course correction. That said, we also run focused, high-intensity programs in the final months. Contact us as early as possible so we can build the right plan for your timeline.",
+      "question_te": "ప్రచార కన్సల్టెన్సీని నియమించడానికి ఉత్తమ సమయం ఎప్పుడు?",
+      "answer_te": "ఎంత త్వరగా అయితే అంత మంచిది. అత్యంత విజయవంతమైన ప్రచారాలు పోలింగ్‌కు 12 నుండి 18 నెలల ముందు నిమగ్నమవుతాయి. అయితే, మేము చివరి నెలల్లో కేంద్రీకృత కార్యక్రమాలను కూడా నిర్వహిస్తాము.",
+      "question_hi": "अभियान कंसल्टेंसी को नियुक्त करने का सबसे अच्छा समय कब है?",
+      "answer_hi": "जितनी जल्दी हो उतना अच्छा। सबसे सफल अभियान मतदान से 12 से 18 महीने पहले जुड़ते हैं। हालांकि, हम अंतिम महीनों में केंद्रित कार्यक्रम भी चलाते हैं।",
+      "is_active": 1
+    },
+    {
+      "id": 7,
+      "sort_order": 7,
+      "category": "Engagement",
+      "question_en": "How do I get started with Vijayavyuham?",
+      "answer_en": "Simply send us an enquiry through the contact form on this website, or call or WhatsApp us. We begin with a confidential conversation to understand your constituency, goals and timeline, then propose a tailored scope — from a single voter survey to a full end-to-end campaign. There is no obligation in the first conversation.",
+      "question_te": "విజయవ్యూహంతో ఎలా ప్రారంభించాలి?",
+      "answer_te": "ఈ వెబ్‌సైట్‌లోని కాంటాక్ట్ ఫారం ద్వారా మాకు విచారణ పంపండి, లేదా కాల్ లేదా వాట్సాప్ చేయండి. మేము మీ నియోజకవర్గం, లక్ష్యాలు మరియు కాలక్రమాన్ని అర్థం చేసుకోవడానికి గోప్యమైన సంభాషణతో ప్రారంభిస్తాము.",
+      "question_hi": "मैं विजयव्यूहम के साथ कैसे शुरू करूं?",
+      "answer_hi": "बस इस वेबसाइट पर संपर्क फ़ॉर्म के माध्यम से हमें पूछताछ भेजें, या कॉल या व्हाट्सएप करें। हम आपके निर्वाचन क्षेत्र, लक्ष्यों और समय-सीमा को समझने के लिए एक गोपनीय बातचीत से शुरू करते हैं।",
+      "is_active": 1
+    },
+    {
+      "id": 8,
+      "sort_order": 8,
+      "category": "Trust",
+      "question_en": "Is my campaign information kept confidential?",
+      "answer_en": "Absolutely. Political strategy is sensitive, and discretion is central to how we work. All research, data, plans and conversations are handled with strict confidentiality, and we do not disclose client relationships or internal strategy to third parties. Your competitive edge stays yours.",
+      "question_te": "నా ప్రచార సమాచారం గోప్యంగా ఉంచబడుతుందా?",
+      "answer_te": "ఖచ్చితంగా. రాజకీయ వ్యూహం సున్నితమైనది, మరియు గోప్యత మా పని విధానంలో కేంద్రంగా ఉంటుంది. అన్ని పరిశోధనలు, డేటా, ప్రణాళికలు కఠినమైన గోప్యతతో నిర్వహించబడతాయి.",
+      "question_hi": "क्या मेरी अभियान जानकारी गोपनीय रखी जाती है?",
+      "answer_hi": "बिल्कुल। राजनीतिक रणनीति संवेदनशील है, और विवेक हमारे काम करने के तरीके का केंद्र है। सभी शोध, डेटा और योजनाएं सख्त गोपनीयता के साथ संभाली जाती हैं।",
+      "is_active": 1
+    },
+    {
+      "id": 9,
+      "sort_order": 9,
+      "category": "Trust",
+      "question_en": "Vijayavyuham is a new firm — why should I trust you?",
+      "answer_en": "We are a new-generation firm built deliberately for the modern Telugu political landscape, combining rigorous research methods, sharp data analytics and disciplined field execution. We believe in transparency: every recommendation is backed by evidence you can see, and we would rather earn your confidence with a clear, honest plan than with inflated promises. Start with a small, well-defined engagement and judge us on results.",
+      "question_te": "విజయవ్యూహం కొత్త సంస్థ — నేను మిమ్మల్ని ఎందుకు నమ్మాలి?",
+      "answer_te": "మేము ఆధునిక తెలుగు రాజకీయ రంగం కోసం ఉద్దేశపూర్వకంగా నిర్మించబడిన కొత్త తరం సంస్థ. మేము పారదర్శకతను నమ్ముతాము: ప్రతి సిఫార్సు మీరు చూడగలిగే ఆధారాలతో మద్దతు ఇవ్వబడుతుంది.",
+      "question_hi": "विजयव्यूहम एक नई फर्म है — मुझे आप पर भरोसा क्यों करना चाहिए?",
+      "answer_hi": "हम आधुनिक तेलुगु राजनीतिक परिदृश्य के लिए जानबूझकर बनाई गई एक नई पीढ़ी की फर्म हैं। हम पारदर्शिता में विश्वास करते हैं: हर सिफारिश उन सबूतों द्वारा समर्थित है जिन्हें आप देख सकते हैं।",
+      "is_active": 1
+    },
+    {
+      "id": 10,
+      "sort_order": 10,
+      "category": "General",
+      "question_en": "In which languages can you run a campaign?",
+      "answer_en": "We work fluently in Telugu, Hindi and English, and this website itself is available in all three. Campaign messaging, surveys, IVR scripts, WhatsApp content and video are all produced in the language your voters actually use — with Telugu at the core for the Telugu states.",
+      "question_te": "మీరు ఏ భాషలలో ప్రచారాన్ని నిర్వహించగలరు?",
+      "answer_te": "మేము తెలుగు, హిందీ మరియు ఇంగ్లీష్‌లో పని చేస్తాము, మరియు ఈ వెబ్‌సైట్ మూడు భాషలలో అందుబాటులో ఉంది. ప్రచార సందేశం, సర్వేలు, IVR స్క్రిప్ట్‌లు అన్నీ మీ ఓటర్లు ఉపయోగించే భాషలో తయారు చేయబడతాయి.",
+      "question_hi": "आप किन भाषाओं में अभियान चला सकते हैं?",
+      "answer_hi": "हम तेलुगु, हिंदी और अंग्रेजी में धाराप्रवाह काम करते हैं, और यह वेबसाइट तीनों भाषाओं में उपलब्ध है। अभियान संदेश, सर्वेक्षण, IVR स्क्रिप्ट सभी उस भाषा में तैयार किए जाते हैं जो आपके मतदाता वास्तव में उपयोग करते हैं।",
+      "is_active": 1
     }
   ]
 } as const;

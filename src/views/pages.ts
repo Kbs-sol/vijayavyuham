@@ -49,7 +49,7 @@ export function homePage(lang: Lang, settings: Record<string, string>, services:
   <img class="hero-bg-star" src="/static/logo.png" alt="">
   <div class="container">
     <div class="hero-inner">
-      <span class="eyebrow reveal in">${t('serving', lang)}</span>
+      <span class="eyebrow reveal in">${t('hero_eyebrow', lang)}</span>
       <h1 class="reveal in">${escHtml(headline)}</h1>
       <p class="lead reveal in">${escHtml(sub)}</p>
       <div class="hero-actions reveal in">

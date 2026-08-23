@@ -10,6 +10,7 @@ export const T: Dict = {
   nav_blog: { en: 'Blog', te: 'బ్లాగ్', hi: 'ब्लॉग' },
   nav_gallery: { en: 'Gallery', te: 'గ్యాలరీ', hi: 'गैलरी' },
   nav_team: { en: 'Team', te: 'బృందం', hi: 'टीम' },
+  nav_faq: { en: 'FAQ', te: 'తరచుగా అడిగే ప్రశ్నలు', hi: 'सामान्य प्रश्न' },
   nav_contact: { en: 'Contact', te: 'సంప్రదించండి', hi: 'संपर्क करें' },
 
   // CTA
@@ -54,6 +55,12 @@ export const T: Dict = {
   follow_us: { en: 'Follow Us', te: 'మమ్మల్ని అనుసరించండి', hi: 'हमें फॉलो करें' },
   rights: { en: 'All rights reserved.', te: 'అన్ని హక్కులు ప్రత్యేకించబడ్డాయి.', hi: 'सर्वाधिकार सुरक्षित।' },
   serving: { en: 'Serving Telangana & Andhra Pradesh', te: 'తెలంగాణ & ఆంధ్రప్రదేశ్‌లకు సేవలు', hi: 'तेलंगाना और आंध्र प्रदेश की सेवा' },
+  hero_eyebrow: { en: 'Political Campaign Strategy & Election Management', te: 'రాజకీయ ప్రచార వ్యూహం & ఎన్నికల నిర్వహణ', hi: 'राजनीतिक अभियान रणनीति और चुनाव प्रबंधन' },
+  // FAQ
+  faq_title: { en: 'Frequently Asked Questions', te: 'తరచుగా అడిగే ప్రశ్నలు', hi: 'अक्सर पूछे जाने वाले प्रश्न' },
+  faq_sub: { en: 'Everything you need to know about working with Vijayavyuham', te: 'విజయవ్యూహంతో పని చేయడం గురించి మీరు తెలుసుకోవలసిన ప్రతిదీ', hi: 'विजयव्यूहम के साथ काम करने के बारे में वह सब कुछ जो आपको जानना चाहिए' },
+  faq_home_eyebrow: { en: 'Questions & Answers', te: 'ప్రశ్నలు & సమాధానాలు', hi: 'प्रश्न और उत्तर' },
+  faq_cta_line: { en: 'Still have questions? Talk to our strategists.', te: 'ఇంకా ప్రశ్నలు ఉన్నాయా? మా వ్యూహకర్తలతో మాట్లాడండి.', hi: 'अभी भी प्रश्न हैं? हमारे रणनीतिकारों से बात करें।' },
   back_to_services: { en: 'Back to all services', te: 'అన్ని సేవలకు తిరిగి', hi: 'सभी सेवाओं पर वापस' },
   no_posts: { en: 'New insights are coming soon.', te: 'కొత్త విశ్లేషణలు త్వరలో వస్తున్నాయి.', hi: 'नई अंतर्दृष्टि जल्द आ रही है।' },
   quick_enquiry: { en: 'Quick Enquiry', te: 'త్వరిత విచారణ', hi: 'त्वरित पूछताछ' },
