@@ -147,3 +147,83 @@ INSERT OR REPLACE INTO testimonials (author_name, author_role, sort_order, quote
  'What impressed me was the discipline — every plan had evidence behind it, and every promise was delivered on the ground.',
  'నన్ను ఆకట్టుకున్నది క్రమశిక్షణ — ప్రతి ప్రణాళిక వెనుక ఆధారం ఉంది.',
  'मुझे जो प्रभावित किया वह अनुशासन था — हर योजना के पीछे सबूत था।');
+
+-- Blog posts (from seed_content.sql)
+INSERT OR REPLACE INTO blogs (slug, category, author, title_en, excerpt_en, content_en, title_te, excerpt_te, content_te, title_hi, excerpt_hi, content_hi, meta_title, meta_description, keywords, is_published, published_at) VALUES
+
+('why-data-driven-campaigns-win-in-telangana-andhra', 'Strategy', 'Vijayavyuham Team',
+ 'Why Data-Driven Campaigns Win in Telangana & Andhra Pradesh',
+ 'In the Telugu states, elections are increasingly decided at the booth level. Here is why grounded voter research beats gut instinct every single time.',
+ 'For decades, campaigns in Telangana and Andhra Pradesh relied heavily on the instinct of local leaders and the reach of a few dominant voices. That era is ending. Today, the constituencies of the Telugu states are among the most digitally connected and politically aware in India — and the campaigns that win are the ones that understand their voters with precision.
+
+Data-driven campaigning starts with a simple discipline: research before rhetoric. Before a single slogan is written or a rally is planned, a serious campaign must know what its voters actually think. What are the top three local issues in each mandal? How is the leadership perceived among first-time voters versus older cohorts? Which booths are safe, which are swing, and which are at genuine risk of low turnout?
+
+At Vijayavyuham, every recommendation we make begins with structured field research designed for the ground realities of the Telugu states — sampling that reflects real constituencies, questionnaires in Telugu, and analysis you can act on the same week. When you combine that intelligence with disciplined booth-level execution, you stop guessing and start winning.
+
+The parties and leaders who embrace this shift will define the next decade of politics in Telangana and Andhra Pradesh. The ones who do not will keep spending energy in the wrong places.',
+ 'తెలంగాణ & ఆంధ్రప్రదేశ్‌లో డేటా ఆధారిత ప్రచారాలు ఎందుకు గెలుస్తాయి',
+ 'తెలుగు రాష్ట్రాల్లో ఎన్నికలు క్రమంగా బూత్ స్థాయిలో నిర్ణయించబడుతున్నాయి. ఆధారాధారిత ఓటర్ పరిశోధన ఎందుకు ఊహల కంటే మెరుగైనదో ఇక్కడ ఉంది.',
+ 'దశాబ్దాలుగా, తెలంగాణ మరియు ఆంధ్రప్రదేశ్‌లలో ప్రచారాలు స్థానిక నాయకుల ఊహలపై ఎక్కువగా ఆధారపడ్డాయి. ఆ యుగం ముగుస్తోంది. నేడు, తెలుగు రాష్ట్రాల నియోజకవర్గాలు భారతదేశంలోనే అత్యంత డిజిటల్‌గా అనుసంధానించబడిన మరియు రాజకీయంగా అవగాహన కలిగినవి.
+
+డేటా ఆధారిత ప్రచారం ఒక సరళమైన క్రమశిక్షణతో ప్రారంభమవుతుంది: వాదన కంటే ముందు పరిశోధన. ఒక్క నినాదం రాయకముందే, తీవ్రమైన ప్రచారం తన ఓటర్లు నిజంగా ఏమనుకుంటున్నారో తెలుసుకోవాలి.
+
+విజయవ్యూహంలో, మేము చేసే ప్రతి సిఫార్సు తెలుగు రాష్ట్రాల క్షేత్రస్థాయి వాస్తవాల కోసం రూపొందించబడిన నిర్మాణాత్మక క్షేత్ర పరిశోధనతో ప్రారంభమవుతుంది.',
+ 'तेलंगाना और आंध्र प्रदेश में डेटा-संचालित अभियान क्यों जीतते हैं',
+ 'तेलुगु राज्यों में चुनाव तेजी से बूथ स्तर पर तय हो रहे हैं। यहां बताया गया है कि जमीनी मतदाता अनुसंधान हर बार अंतर्ज्ञान को क्यों हराता है।',
+ 'दशकों तक, तेलंगाना और आंध्र प्रदेश में अभियान स्थानीय नेताओं के अंतर्ज्ञान पर बहुत अधिक निर्भर थे। वह युग समाप्त हो रहा है। आज, तेलुगु राज्यों के निर्वाचन क्षेत्र भारत में सबसे अधिक डिजिटल रूप से जुड़े हुए हैं।
+
+डेटा-संचालित अभियान एक सरल अनुशासन से शुरू होता है: बयानबाजी से पहले शोध। विजयव्यूहम में, हमारी हर सिफारिश तेलुगु राज्यों की जमीनी वास्तविकताओं के लिए डिज़ाइन किए गए संरचित क्षेत्र अनुसंधान से शुरू होती है।',
+ 'Why Data-Driven Political Campaigns Win in Telangana & Andhra Pradesh | Vijayavyuham',
+ 'Discover why data-driven political campaigns and booth-level voter research consistently win elections in Telangana and Andhra Pradesh. Insights from Vijayavyuham.',
+ 'data driven political campaign Telangana, voter research Andhra Pradesh, booth level strategy, election consultancy Telugu states, Vijayavyuham',
+ 1, '2025-11-10 09:00:00'),
+
+('booth-level-strategy-guide-telugu-states', 'Field Operations', 'Vijayavyuham Team',
+ 'The Booth-Level Strategy Guide for Winning Telugu Constituencies',
+ 'Elections are won and lost booth by booth. A practical look at how booth management, local accountability, and turnout planning decide close races.',
+ 'Ask any experienced campaign manager in the Telugu states where elections are truly won, and the answer is always the same: at the booth. A constituency is not one big battle — it is hundreds of small ones, each with its own community mix, its own local issues, and its own turnout dynamics.
+
+Booth-first execution means treating every polling booth as a unit of accountability. Who is responsible for it? What is the expected turnout? Which households are supporters, which are undecided, and which need a follow-up conversation? Without answers to these questions, even the most charismatic candidate is flying blind on polling day.
+
+A disciplined booth management system has three pillars. First, mapping: segmenting each booth by community, persuasion opportunity, and turnout risk. Second, accountability: assigning a named local worker to each booth with clear review cycles. Third, follow-through: converting doorstep conversations into data, and data into action.
+
+At Vijayavyuham, we build these systems from the ground up for constituencies across Telangana and Andhra Pradesh. The result is a campaign that knows exactly where to invest its energy in the final, decisive weeks.',
+ 'తెలుగు నియోజకవర్గాలను గెలవడానికి బూత్-స్థాయి వ్యూహ మార్గదర్శి',
+ 'ఎన్నికలు బూత్ ద్వారా బూత్ గెలవబడతాయి మరియు ఓడిపోతాయి. బూత్ నిర్వహణ దగ్గరి పోటీలను ఎలా నిర్ణయిస్తుందో ఆచరణాత్మక విశ్లేషణ.',
+ 'తెలుగు రాష్ట్రాల్లో ఎన్నికలు నిజంగా ఎక్కడ గెలవబడతాయో అనుభవజ్ఞుడైన ఏ ప్రచార నిర్వాహకుడిని అడిగినా, సమాధానం ఎప్పుడూ ఒకటే: బూత్ వద్ద. ఒక నియోజకవర్గం ఒక పెద్ద యుద్ధం కాదు — ఇది వందల చిన్న యుద్ధాలు.
+
+బూత్-ఆధారిత అమలు అంటే ప్రతి పోలింగ్ బూత్‌ను జవాబుదారీతన యూనిట్‌గా పరిగణించడం. విజయవ్యూహంలో, మేము తెలంగాణ మరియు ఆంధ్రప్రదేశ్‌లోని నియోజకవర్గాల కోసం ఈ వ్యవస్థలను నిర్మిస్తాము.',
+ 'तेलुगु निर्वाचन क्षेत्रों को जीतने के लिए बूथ-स्तरीय रणनीति गाइड',
+ 'चुनाव बूथ दर बूथ जीते और हारे जाते हैं। बूथ प्रबंधन नज़दीकी मुकाबलों को कैसे तय करता है, इसका व्यावहारिक विश्लेषण।',
+ 'तेलुगु राज्यों में किसी भी अनुभवी अभियान प्रबंधक से पूछें कि चुनाव वास्तव में कहां जीते जाते हैं, और उत्तर हमेशा एक ही होता है: बूथ पर। एक निर्वाचन क्षेत्र एक बड़ी लड़ाई नहीं है — यह सैकड़ों छोटी लड़ाइयां हैं।
+
+बूथ-प्रथम निष्पादन का अर्थ है प्रत्येक मतदान बूथ को जवाबदेही की इकाई के रूप में मानना। विजयव्यूहम में, हम तेलंगाना और आंध्र प्रदेश के निर्वाचन क्षेत्रों के लिए ये प्रणालियां बनाते हैं।',
+ 'Booth-Level Strategy Guide for Winning Telugu Constituencies | Vijayavyuham',
+ 'A practical guide to booth management, local accountability, and turnout planning for winning close races in Telangana and Andhra Pradesh constituencies.',
+ 'booth management Telangana, booth level strategy Andhra Pradesh, election field operations, turnout planning, political consultancy Telugu states',
+ 1, '2025-11-18 09:00:00'),
+
+('whatsapp-ivr-ai-video-modern-voter-outreach', 'Digital', 'Vijayavyuham Team',
+ 'WhatsApp, IVR & AI Video: The New Toolkit for Voter Outreach',
+ 'The Telugu voter lives on WhatsApp. Learn how modern digital outreach — bulk messaging, IVR calls, and personalized AI video — is reshaping campaigns.',
+ 'The single biggest shift in voter communication over the last five years has been the move to the smartphone — and in the Telugu states, that means WhatsApp. Voters who once received their political information from television and newspapers now get it, discuss it, and forward it on their phones every single day.
+
+Modern campaigns meet voters where they already are. That starts with organized WhatsApp outreach: campaign updates, localized messages, event invitations, and rich media distributed through a structured volunteer network. It continues with IVR bulk calls — recorded voice messages in Telugu, Hindi, or English that reach lakhs of voters with measurable response tracking. And increasingly, it includes AI-personalized video: leader messages that address constituencies, communities, and supporters by name and locality, delivered at a scale that once seemed impossible.
+
+None of these tools replace the ground game — they amplify it. A well-run digital program keeps a campaign present in a voter''s daily life between doorstep visits, reinforces the core message, and creates opportunities for two-way engagement.
+
+At Vijayavyuham, we plan and execute integrated digital outreach tuned specifically for Telugu audiences, so your message lands with the right person, in the right language, at the right moment.',
+ 'వాట్సాప్, IVR & AI వీడియో: ఓటర్ ప్రచారానికి కొత్త సాధనాలు',
+ 'తెలుగు ఓటరు వాట్సాప్‌లో నివసిస్తారు. ఆధునిక డిజిటల్ ప్రచారం ప్రచారాలను ఎలా మారుస్తుందో తెలుసుకోండి.',
+ 'గత ఐదేళ్లలో ఓటర్ల సమాచారంలో అతిపెద్ద మార్పు స్మార్ట్‌ఫోన్‌కు మారడం — తెలుగు రాష్ట్రాల్లో అంటే వాట్సాప్. ఆధునిక ప్రచారాలు ఓటర్లు ఇప్పటికే ఉన్న చోట కలుస్తాయి.
+
+విజయవ్యూహంలో, మేము తెలుగు ప్రేక్షకుల కోసం ప్రత్యేకంగా రూపొందించిన సమగ్ర డిజిటల్ ప్రచారాన్ని ప్లాన్ చేసి అమలు చేస్తాము.',
+ 'व्हाट्सएप, IVR और AI वीडियो: मतदाता आउटरीच के लिए नया टूलकिट',
+ 'तेलुगु मतदाता व्हाट्सएप पर रहता है। जानें कि आधुनिक डिजिटल आउटरीच अभियानों को कैसे नया रूप दे रहा है।',
+ 'पिछले पांच वर्षों में मतदाता संचार में सबसे बड़ा बदलाव स्मार्टफोन की ओर बढ़ना रहा है — और तेलुगु राज्यों में, इसका मतलब व्हाट्सएप है। आधुनिक अभियान मतदाताओं से वहीं मिलते हैं जहां वे पहले से हैं।
+
+विजयव्यूहम में, हम तेलुगु दर्शकों के लिए विशेष रूप से तैयार एकीकृत डिजिटल आउटरीच की योजना बनाते और निष्पादित करते हैं।',
+ 'WhatsApp, IVR & AI Video Voter Outreach in Telugu States | Vijayavyuham',
+ 'How WhatsApp bulk messaging, IVR calls, and AI-personalized video are reshaping political voter outreach in Telangana and Andhra Pradesh.',
+ 'WhatsApp campaign Telangana, IVR bulk calls Andhra Pradesh, AI video messaging politics, digital voter outreach Telugu, Vijayavyuham',
+ 1, '2025-11-25 09:00:00');
