@@ -144,15 +144,22 @@ ${keywords ? `<meta name="keywords" content="${escAttr(keywords)}">` : ''}
     </a>
     <ul class="nav-links" id="navLinks">
       ${navLinksHtml}
+      <li class="drawer-lang">
+        <span class="drawer-lang-label"><i class="fa-solid fa-globe"></i> ${t('lang_prompt', lang)}</span>
+        <div class="lang-seg-group" role="group" aria-label="Language">${langSegHtml}</div>
+      </li>
       <li class="mobile-only-cta"><a href="/contact" class="gold-text">${t('cta_enquire', lang)}</a></li>
     </ul>
     <div class="nav-actions">
-      <div class="lang-seg-group" id="langSeg" role="group" aria-label="Language">${langSegHtml}</div>
+      <div class="lang-seg-group hide-mobile" id="langSeg" role="group" aria-label="Language">${langSegHtml}</div>
       <a href="/contact" class="btn btn-gold hide-mobile" style="padding:10px 22px;">${t('cta_enquire', lang)}</a>
-      <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
 </header>
+
+<!-- Mobile drawer backdrop -->
+<div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 
 <main>
 ${body}

@@ -1,0 +1,45 @@
+# ============================================================
+# Vijayavyuham — Environment variables / secrets  (EXAMPLE)
+# ------------------------------------------------------------
+# EVERY variable below is OPTIONAL. With NONE set, the site runs
+# fully in OFFLINE demo mode (in-memory store, default login) so
+# the whole thing is demonstrable with zero external services.
+#
+# LOCAL DEV:  copy this file to `.dev.vars` and fill in values.
+#             `.dev.vars` is git-ignored — never commit real keys.
+# PRODUCTION: set these as Cloudflare Pages *secrets* (encrypted),
+#             NOT as plaintext vars. See SYSTEM_GUIDE.md.
+#             Dashboard: Pages > your project > Settings >
+#                        Environment variables > Add (Encrypt).
+#             CLI:  npx wrangler pages secret put SUPABASE_URL
+# ============================================================
+
+# ---------- DATABASE (Supabase) ----------
+# Set BOTH to switch from offline demo to a real Supabase database.
+# If either is missing, the app stays in offline mode.
+#   URL  = Supabase project URL      (Settings > API > Project URL)
+#   KEY  = service_role secret key   (Settings > API > service_role)
+#          NOTE: service_role bypasses RLS — server-side ONLY,
+#          never expose it to the browser.
+SUPABASE_URL=https://your-project-ref.supabase.co
+SUPABASE_SERVICE_KEY=your-service-role-key
+
+# ---------- ADMIN SESSION SIGNING ----------
+# Secret used to HMAC-sign the stateless admin session cookie.
+# Optional (a built-in default is used if unset) but you SHOULD set
+# a long random value in production. Generate one with:
+#   openssl rand -hex 32
+SESSION_SECRET=change-me-to-a-long-random-string
+
+# ---------- ADMIN PASSWORDS (override built-in demo logins) ----------
+# Optional. If unset, the built-in demo credentials work:
+#   developer / Vijaya@Dev2025      manager / Vijaya@Mgr2025
+# Set these in production to override the demo passwords.
+ADMIN_DEV_PASSWORD=your-strong-developer-password
+ADMIN_MGR_PASSWORD=your-strong-manager-password
+
+# ---------- CLOUDINARY (optional, for the media hint in admin) ----------
+# The gallery accepts EMBED LINKS directly (Cloudinary image/video URLs
+# OR YouTube links), so a cloud name is NOT required for it to work.
+# This is only used to show upload hints in the admin panel.
+CLOUDINARY_CLOUD_NAME=your-cloud-name

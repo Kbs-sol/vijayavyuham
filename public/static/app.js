@@ -51,15 +51,38 @@
   window.addEventListener('scroll', onScroll);
   onScroll();
 
-  // ---------- Mobile menu ----------
+  // ---------- Mobile menu (drawer + backdrop + scroll lock) ----------
   const toggle = document.getElementById('mobileToggle');
   const navLinks = document.getElementById('navLinks');
+  const backdrop = document.getElementById('navBackdrop');
+  function setMenu(open) {
+    if (!navLinks) return;
+    navLinks.classList.toggle('open', open);
+    if (backdrop) backdrop.classList.toggle('show', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (toggle) {
+      const icon = toggle.querySelector('i');
+      if (icon) icon.className = open ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+  }
   if (toggle && navLinks) {
     toggle.addEventListener('click', function () {
-      navLinks.classList.toggle('open');
-      const icon = toggle.querySelector('i');
-      if (navLinks.classList.contains('open')) { icon.className = 'fa-solid fa-xmark'; }
-      else { icon.className = 'fa-solid fa-bars'; }
+      setMenu(!navLinks.classList.contains('open'));
+    });
+    // Close when a nav link is tapped
+    navLinks.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { setMenu(false); });
+    });
+    // Close on backdrop tap
+    if (backdrop) backdrop.addEventListener('click', function () { setMenu(false); });
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && navLinks.classList.contains('open')) setMenu(false);
+    });
+    // Reset if resized back to desktop
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 768 && navLinks.classList.contains('open')) setMenu(false);
     });
   }
 

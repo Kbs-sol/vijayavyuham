@@ -189,7 +189,15 @@ class OfflineStore implements Store {
   private seq: Record<Collection, number>;
 
   constructor() {
-    this.settings = { ...(SEED.settings as Record<string, string>) };
+    // Coerce every settings value to a string. seed-data.ts may carry
+    // numeric-looking values (e.g. page toggles 1/0) as JS numbers, but
+    // the whole app treats settings as strings (pageEnabled() does a
+    // strict `=== '1'` compare). Postgres text columns already return
+    // strings, so this keeps offline behaviour identical to Supabase.
+    this.settings = {};
+    for (const [k, v] of Object.entries(SEED.settings as Record<string, unknown>)) {
+      this.settings[k] = v == null ? '' : String(v);
+    }
     this.data = {
       services: deepClone(SEED.services as unknown as Row[]),
       blogs: deepClone(SEED.blogs as unknown as Row[]),
