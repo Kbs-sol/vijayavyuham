@@ -1,16 +1,11 @@
-import { Bindings } from '../types';
+import { Store } from './store';
 
-export async function getSettings(db: D1Database): Promise<Record<string, string>> {
-  const { results } = await db.prepare('SELECT key, value FROM settings').all<{ key: string; value: string }>();
-  const map: Record<string, string> = {};
-  for (const r of results) map[r.key] = r.value ?? '';
-  return map;
+export async function getSettings(store: Store): Promise<Record<string, string>> {
+  return store.getSettings();
 }
 
-export async function setSetting(db: D1Database, key: string, value: string) {
-  await db.prepare(
-    'INSERT INTO settings (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP) ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=CURRENT_TIMESTAMP'
-  ).bind(key, value).run();
+export async function setSetting(store: Store, key: string, value: string) {
+  await store.setSettings({ [key]: value });
 }
 
 // Which pages are enabled (from settings page_* keys)

@@ -5,12 +5,18 @@
   "pages_build_output_dir": "./dist",
   "compatibility_flags": [
     "nodejs_compat"
-  ],
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "vijayavyuham-production",
-      "database_id": "82d3da46-b885-451c-ae1e-855bcbf28dca"
-    }
   ]
+  // NOTE: No database bindings are declared here on purpose.
+  // The app uses Supabase over HTTPS (REST API) via env vars/secrets,
+  // NOT a Cloudflare binding — so the site builds & deploys cleanly
+  // even before any service is connected (offline fallback mode).
+  //
+  // Configure these in the Cloudflare Pages dashboard
+  // (Settings -> Environment variables / Secrets) — never hardcode:
+  //   SUPABASE_URL           = https://<project-ref>.supabase.co
+  //   SUPABASE_SERVICE_KEY   = <service_role key>   (secret)
+  //   SESSION_SECRET         = <random long string> (secret)
+  //   ADMIN_DEV_PASSWORD     = <optional override>  (secret)
+  //   ADMIN_MGR_PASSWORD     = <optional override>  (secret)
+  //   CLOUDINARY_CLOUD_NAME  = <optional>
 }

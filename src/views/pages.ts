@@ -1,6 +1,7 @@
 import { Lang } from '../types';
 import { t, loc } from '../lib/i18n';
 import { escHtml, escAttr } from './layout';
+import { resolveEmbed } from '../lib/embed';
 
 // ---------- HERO / HOME ----------
 export function homePage(lang: Lang, settings: Record<string, string>, services: any[], blogs: any[], testimonials: any[]): string {
@@ -296,17 +297,37 @@ function formatContent(content: string): string {
 
 // ---------- GALLERY ----------
 export function galleryPage(lang: Lang, settings: Record<string, string>, items: any[]): string {
-  const grid = items.length ? items.map((g) => `
-    <div class="gallery-item reveal">
-      <img src="${escAttr(g.image_url)}" alt="${escAttr(loc(g, 'title', lang) || 'Vijayavyuham')}" loading="lazy">
-      ${loc(g, 'caption', lang) || loc(g, 'title', lang) ? `<div class="cap">${escHtml(loc(g, 'caption', lang) || loc(g, 'title', lang))}</div>` : ''}
-    </div>`).join('') : `<p style="grid-column:1/-1;text-align:center;color:var(--text-faint);">${lang === 'te' ? 'త్వరలో చిత్రాలు జోడించబడతాయి.' : lang === 'hi' ? 'जल्द ही तस्वीरें जोड़ी जाएंगी।' : 'Photos coming soon.'}</p>`;
+  const grid = items.length ? items.map((g) => galleryItem(g, lang)).join('')
+    : `<p style="grid-column:1/-1;text-align:center;color:var(--text-faint);">${lang === 'te' ? 'త్వరలో చిత్రాలు జోడించబడతాయి.' : lang === 'hi' ? 'जल्द ही तस्वीरें जोड़ी जाएंगी।' : 'Photos coming soon.'}</p>`;
   return `
 ${pageHero(lang, t('nav_gallery', lang), t('our_work', lang), settings)}
 <section class="section">
   <div class="container"><div class="gallery-grid">${grid}</div></div>
 </section>
 ${ctaBand(lang)}`;
+}
+
+// Renders a single gallery item — supports images, direct videos,
+// YouTube, Vimeo and generic iframe embeds from any hosting link.
+function galleryItem(g: any, lang: Lang): string {
+  const url = g.media_url || g.image_url || '';
+  const forced = (g.media_type && g.media_type !== 'auto') ? g.media_type : null;
+  const e = resolveEmbed(url);
+  const kind = forced || e.kind;
+  const label = loc(g, 'title', lang) || 'Vijayavyuham';
+  const caption = loc(g, 'caption', lang) || loc(g, 'title', lang);
+  const capHtml = caption ? `<div class="cap">${escHtml(caption)}</div>` : '';
+
+  let media = '';
+  if (kind === 'youtube' || kind === 'iframe' || (forced === 'video' && e.kind !== 'video' && e.src.includes('/embed/'))) {
+    media = `<div class="gallery-embed"><iframe src="${escAttr(e.src)}" title="${escAttr(label)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+  } else if (kind === 'video') {
+    media = `<video src="${escAttr(e.src)}" controls preload="metadata" ${e.thumbnail ? `poster="${escAttr(e.thumbnail)}"` : ''} playsinline></video>`;
+  } else {
+    media = `<img src="${escAttr(e.src || url)}" alt="${escAttr(label)}" loading="lazy">`;
+  }
+  const isEmbed = kind === 'youtube' || kind === 'iframe';
+  return `<div class="gallery-item reveal${isEmbed ? ' is-embed' : ''}">${media}${capHtml}</div>`;
 }
 
 // ---------- TEAM ----------

@@ -16,36 +16,29 @@
     window.location.href = url.toString();
   }
 
-  // Language intro overlay — show only once (first visit)
-  const intro = document.getElementById('langIntro');
-  if (intro) {
-    if (getLangCookie()) {
-      intro.classList.add('hidden');
-    } else {
-      document.body.style.overflow = 'hidden';
-    }
-    intro.querySelectorAll('.lang-choice').forEach(function (el) {
-      el.addEventListener('click', function () {
-        document.body.style.overflow = '';
-        setLang(el.getAttribute('data-lang'));
-      });
+  // Always-visible segmented language toggle (header)
+  document.querySelectorAll('.lang-seg[data-lang]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var code = b.getAttribute('data-lang');
+      if (code !== (window.VV && window.VV.lang)) setLang(code);
     });
-  }
+  });
 
-  // Language dropdown
-  const langBtn = document.getElementById('langBtn');
-  const langMenu = document.getElementById('langMenu');
-  if (langBtn && langMenu) {
-    langBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      langMenu.classList.toggle('open');
-    });
-    document.addEventListener('click', function () { langMenu.classList.remove('open'); });
-    langMenu.querySelectorAll('a[data-lang]').forEach(function (a) {
-      a.addEventListener('click', function (e) {
-        e.preventDefault();
-        setLang(a.getAttribute('data-lang'));
-      });
+  // Non-intrusive first-visit language toast (does NOT block the page)
+  var toast = document.getElementById('langToast');
+  if (toast) {
+    if (!getLangCookie()) {
+      setTimeout(function () { toast.classList.add('show'); }, 700);
+    }
+    function dismissToast() {
+      toast.classList.remove('show');
+      // remember dismissal even if they didn't pick (default English stays)
+      if (!getLangCookie()) document.cookie = 'vv_lang=en; path=/; max-age=' + (60 * 60 * 24 * 365);
+    }
+    var closeBtn = document.getElementById('langToastClose');
+    if (closeBtn) closeBtn.addEventListener('click', dismissToast);
+    toast.querySelectorAll('.lang-toast-choice[data-lang]').forEach(function (el) {
+      el.addEventListener('click', function () { setLang(el.getAttribute('data-lang')); });
     });
   }
 

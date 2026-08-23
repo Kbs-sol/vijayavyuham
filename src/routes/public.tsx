@@ -1,8 +1,9 @@
 import { Hono } from 'hono';
 import { getCookie } from 'hono/cookie';
 import { Bindings, Lang } from '../types';
-import { getSettings, pageEnabled } from '../lib/data';
-import { renderLayout, escHtml } from '../views/layout';
+import { getStore } from '../lib/store';
+import { pageEnabled } from '../lib/data';
+import { renderLayout } from '../views/layout';
 import {
   homePage, aboutPage, servicesPage, serviceDetailPage,
   blogListPage, blogDetailPage, galleryPage, teamPage, contactPage,
@@ -11,10 +12,11 @@ import { t, loc } from '../lib/i18n';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
+const SITE_URL = 'https://vijayavyuham.pages.dev';
+
 function resolveLang(c: any): Lang {
   const q = c.req.query('lang');
   if (q === 'en' || q === 'te' || q === 'hi') {
-    // set cookie so it persists
     c.header('Set-Cookie', `vv_lang=${q}; Path=/; Max-Age=${60 * 60 * 24 * 365}`);
     return q;
   }
@@ -23,9 +25,8 @@ function resolveLang(c: any): Lang {
   return 'en';
 }
 
-async function getActiveServices(db: D1Database) {
-  const { results } = await db.prepare('SELECT * FROM services WHERE is_active = 1 ORDER BY sort_order ASC, id ASC').all();
-  return results as any[];
+async function getActiveServices(store: ReturnType<typeof getStore>) {
+  return store.list('services', { where: { is_active: 1 }, orderBy: [['sort_order', 'asc'], ['id', 'asc']] });
 }
 
 function notEnabled(c: any, settings: Record<string, string>, lang: Lang) {
@@ -44,12 +45,13 @@ function notEnabled(c: any, settings: Record<string, string>, lang: Lang) {
 // ---------- HOME ----------
 app.get('/', async (c) => {
   const lang = resolveLang(c);
-  const settings = await getSettings(c.env.DB);
-  const services = await getActiveServices(c.env.DB);
+  const store = getStore(c.env);
+  const settings = await store.getSettings();
+  const services = await getActiveServices(store);
   const blogs = pageEnabled(settings, 'blog')
-    ? (await c.env.DB.prepare('SELECT * FROM blogs WHERE is_published = 1 ORDER BY published_at DESC LIMIT 3').all()).results as any[]
+    ? await store.list('blogs', { where: { is_published: 1 }, orderBy: [['published_at', 'desc']], limit: 3 })
     : [];
-  const testimonials = (await c.env.DB.prepare('SELECT * FROM testimonials WHERE is_active = 1 ORDER BY sort_order ASC LIMIT 2').all()).results as any[];
+  const testimonials = await store.list('testimonials', { where: { is_active: 1 }, orderBy: [['sort_order', 'asc']], limit: 2 });
 
   const title = `Vijayavyuham · ${lang === 'te' ? 'తెలుగు రాష్ట్రాల రాజకీయ ప్రచార భాగస్వామి' : lang === 'hi' ? 'तेलुगु राज्यों का राजनीतिक अभियान भागीदार' : 'Political Campaign Consultancy for Telangana & Andhra Pradesh'}`;
   const desc = settings[`meta_description_${lang}`] || settings.meta_description_en || '';
@@ -58,8 +60,7 @@ app.get('/', async (c) => {
     title, description: desc, lang, path: '/', settings,
     keywords: settings.meta_keywords,
     jsonLd: [{
-      '@context': 'https://schema.org', '@type': 'WebSite', name: 'Vijayavyuham',
-      url: 'https://vijayavyuham.pages.dev',
+      '@context': 'https://schema.org', '@type': 'WebSite', name: 'Vijayavyuham', url: SITE_URL,
     }],
   }));
 });
@@ -67,7 +68,8 @@ app.get('/', async (c) => {
 // ---------- ABOUT ----------
 app.get('/about', async (c) => {
   const lang = resolveLang(c);
-  const settings = await getSettings(c.env.DB);
+  const store = getStore(c.env);
+  const settings = await store.getSettings();
   if (!pageEnabled(settings, 'about')) return notEnabled(c, settings, lang);
   const title = `${t('nav_about', lang)} · Vijayavyuham`;
   return c.html(renderLayout(aboutPage(lang, settings), {
@@ -79,9 +81,10 @@ app.get('/about', async (c) => {
 // ---------- SERVICES ----------
 app.get('/services', async (c) => {
   const lang = resolveLang(c);
-  const settings = await getSettings(c.env.DB);
+  const store = getStore(c.env);
+  const settings = await store.getSettings();
   if (!pageEnabled(settings, 'services')) return notEnabled(c, settings, lang);
-  const services = await getActiveServices(c.env.DB);
+  const services = await getActiveServices(store);
   const title = `${t('nav_services', lang)} · Vijayavyuham`;
   const desc = lang === 'te' ? 'రాజకీయ సర్వే, ఓటర్ మ్యాపింగ్, బూత్ నిర్వహణ, సోషల్ మీడియా, IVR, వాట్సాప్ మరియు AI వీడియో సందేశం.' : lang === 'hi' ? 'राजनीतिक सर्वेक्षण, मतदाता मानचित्रण, बूथ प्रबंधन, सोशल मीडिया, IVR, व्हाट्सएप और AI वीडियो।' : 'Political survey & research, voter mapping, booth management, social media campaigns, IVR bulk calls, WhatsApp outreach, AI video messaging and more — for Telangana & Andhra Pradesh.';
 
@@ -89,7 +92,7 @@ app.get('/services', async (c) => {
     '@context': 'https://schema.org', '@type': 'ItemList',
     itemListElement: services.map((s, i) => ({
       '@type': 'ListItem', position: i + 1, name: loc(s, 'title', lang),
-      url: `https://vijayavyuham.pages.dev/services/${s.slug}`,
+      url: `${SITE_URL}/services/${s.slug}`,
     })),
   };
   return c.html(renderLayout(servicesPage(lang, settings, services), {
@@ -101,12 +104,13 @@ app.get('/services', async (c) => {
 // ---------- SERVICE DETAIL ----------
 app.get('/services/:slug', async (c) => {
   const lang = resolveLang(c);
-  const settings = await getSettings(c.env.DB);
+  const store = getStore(c.env);
+  const settings = await store.getSettings();
   if (!pageEnabled(settings, 'services')) return notEnabled(c, settings, lang);
   const slug = c.req.param('slug');
-  const s = await c.env.DB.prepare('SELECT * FROM services WHERE slug = ? AND is_active = 1').bind(slug).first();
-  if (!s) return notEnabled(c, settings, lang);
-  const others = (await c.env.DB.prepare('SELECT * FROM services WHERE is_active = 1 AND slug != ? ORDER BY sort_order ASC LIMIT 3').bind(slug).all()).results as any[];
+  const s = await store.getBy('services', 'slug', slug);
+  if (!s || s.is_active == 0) return notEnabled(c, settings, lang);
+  const others = (await getActiveServices(store)).filter((x) => x.slug !== slug).slice(0, 3);
 
   const title = `${loc(s, 'title', lang)} · Vijayavyuham`;
   const desc = loc(s, 'short', lang);
@@ -126,9 +130,10 @@ app.get('/services/:slug', async (c) => {
 // ---------- BLOG ----------
 app.get('/blog', async (c) => {
   const lang = resolveLang(c);
-  const settings = await getSettings(c.env.DB);
+  const store = getStore(c.env);
+  const settings = await store.getSettings();
   if (!pageEnabled(settings, 'blog')) return notEnabled(c, settings, lang);
-  const blogs = (await c.env.DB.prepare('SELECT * FROM blogs WHERE is_published = 1 ORDER BY published_at DESC').all()).results as any[];
+  const blogs = await store.list('blogs', { where: { is_published: 1 }, orderBy: [['published_at', 'desc']] });
   const title = `${t('nav_blog', lang)} · Vijayavyuham`;
   return c.html(renderLayout(blogListPage(lang, settings, blogs), {
     title, description: 'Insights on political campaign strategy, voter research, and digital politics in Telangana and Andhra Pradesh.', lang, path: '/blog', settings,
@@ -138,12 +143,13 @@ app.get('/blog', async (c) => {
 
 app.get('/blog/:slug', async (c) => {
   const lang = resolveLang(c);
-  const settings = await getSettings(c.env.DB);
+  const store = getStore(c.env);
+  const settings = await store.getSettings();
   if (!pageEnabled(settings, 'blog')) return notEnabled(c, settings, lang);
   const slug = c.req.param('slug');
-  const b = await c.env.DB.prepare('SELECT * FROM blogs WHERE slug = ? AND is_published = 1').bind(slug).first();
-  if (!b) return notEnabled(c, settings, lang);
-  const related = (await c.env.DB.prepare('SELECT * FROM blogs WHERE is_published = 1 AND slug != ? ORDER BY published_at DESC LIMIT 3').bind(slug).all()).results as any[];
+  const b = await store.getBy('blogs', 'slug', slug);
+  if (!b || b.is_published == 0) return notEnabled(c, settings, lang);
+  const related = (await store.list('blogs', { where: { is_published: 1 }, orderBy: [['published_at', 'desc']], limit: 4 })).filter((x) => x.slug !== slug).slice(0, 3);
 
   const title = (b.meta_title as string) || `${loc(b, 'title', lang)} · Vijayavyuham`;
   const desc = (b.meta_description as string) || loc(b, 'excerpt', lang);
@@ -151,7 +157,7 @@ app.get('/blog/:slug', async (c) => {
     '@context': 'https://schema.org', '@type': 'BlogPosting',
     headline: loc(b, 'title', lang), description: loc(b, 'excerpt', lang),
     author: { '@type': 'Organization', name: (b.author as string) || 'Vijayavyuham' },
-    publisher: { '@type': 'Organization', name: 'Vijayavyuham', logo: { '@type': 'ImageObject', url: 'https://vijayavyuham.pages.dev/static/logo.png' } },
+    publisher: { '@type': 'Organization', name: 'Vijayavyuham', logo: { '@type': 'ImageObject', url: `${SITE_URL}/static/logo.png` } },
     datePublished: b.published_at, ...(b.cover_image ? { image: b.cover_image } : {}),
   };
   return c.html(renderLayout(blogDetailPage(lang, settings, b, related), {
@@ -164,9 +170,10 @@ app.get('/blog/:slug', async (c) => {
 // ---------- GALLERY ----------
 app.get('/gallery', async (c) => {
   const lang = resolveLang(c);
-  const settings = await getSettings(c.env.DB);
+  const store = getStore(c.env);
+  const settings = await store.getSettings();
   if (!pageEnabled(settings, 'gallery')) return notEnabled(c, settings, lang);
-  const items = (await c.env.DB.prepare('SELECT * FROM gallery WHERE is_active = 1 ORDER BY sort_order ASC, id DESC').all()).results as any[];
+  const items = await store.list('gallery', { where: { is_active: 1 }, orderBy: [['sort_order', 'asc'], ['id', 'desc']] });
   const title = `${t('nav_gallery', lang)} · Vijayavyuham`;
   return c.html(renderLayout(galleryPage(lang, settings, items), {
     title, description: 'Vijayavyuham campaign work, events, and field operations across Telangana and Andhra Pradesh.', lang, path: '/gallery', settings,
@@ -176,9 +183,10 @@ app.get('/gallery', async (c) => {
 // ---------- TEAM ----------
 app.get('/team', async (c) => {
   const lang = resolveLang(c);
-  const settings = await getSettings(c.env.DB);
+  const store = getStore(c.env);
+  const settings = await store.getSettings();
   if (!pageEnabled(settings, 'team')) return notEnabled(c, settings, lang);
-  const members = (await c.env.DB.prepare('SELECT * FROM team WHERE is_active = 1 ORDER BY sort_order ASC, id ASC').all()).results as any[];
+  const members = await store.list('team', { where: { is_active: 1 }, orderBy: [['sort_order', 'asc'], ['id', 'asc']] });
   const title = `${t('nav_team', lang)} · Vijayavyuham`;
   return c.html(renderLayout(teamPage(lang, settings, members), {
     title, description: 'Meet the Vijayavyuham team — political strategists, researchers, and field experts serving the Telugu states.', lang, path: '/team', settings,
@@ -188,9 +196,10 @@ app.get('/team', async (c) => {
 // ---------- CONTACT ----------
 app.get('/contact', async (c) => {
   const lang = resolveLang(c);
-  const settings = await getSettings(c.env.DB);
+  const store = getStore(c.env);
+  const settings = await store.getSettings();
   if (!pageEnabled(settings, 'contact')) return notEnabled(c, settings, lang);
-  const services = await getActiveServices(c.env.DB);
+  const services = await getActiveServices(store);
   const title = `${t('contact_us', lang)} · Vijayavyuham`;
   return c.html(renderLayout(contactPage(lang, settings, services), {
     title, description: 'Contact Vijayavyuham for political campaign strategy, voter research, and election management across Telangana and Andhra Pradesh.', lang, path: '/contact', settings,
@@ -200,14 +209,15 @@ app.get('/contact', async (c) => {
 
 // ---------- SEO: sitemap & robots ----------
 app.get('/sitemap.xml', async (c) => {
-  const settings = await getSettings(c.env.DB);
-  const base = 'https://vijayavyuham.pages.dev';
+  const store = getStore(c.env);
+  const settings = await store.getSettings();
+  const base = SITE_URL;
   const urls: string[] = ['/'];
   ['about', 'services', 'blog', 'gallery', 'team', 'contact'].forEach((p) => { if (pageEnabled(settings, p)) urls.push('/' + p); });
-  const services = await getActiveServices(c.env.DB);
+  const services = await getActiveServices(store);
   if (pageEnabled(settings, 'services')) services.forEach((s) => urls.push('/services/' + s.slug));
   if (pageEnabled(settings, 'blog')) {
-    const blogs = (await c.env.DB.prepare('SELECT slug FROM blogs WHERE is_published = 1').all()).results as any[];
+    const blogs = await store.list('blogs', { where: { is_published: 1 } });
     blogs.forEach((b) => urls.push('/blog/' + b.slug));
   }
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -223,7 +233,7 @@ Allow: /
 Disallow: /studio
 Disallow: /api/admin
 
-Sitemap: https://vijayavyuham.pages.dev/sitemap.xml
+Sitemap: ${SITE_URL}/sitemap.xml
 `, 200, { 'Content-Type': 'text/plain' });
 });
 

@@ -3,7 +3,10 @@ module.exports = {
     {
       name: 'vijayavyuham',
       script: 'npx',
-      args: 'wrangler pages dev dist --d1=vijayavyuham-production --local --ip 0.0.0.0 --port 3000',
+      // No bindings: runs in offline fallback mode locally (no Supabase).
+      // To test WITH Supabase, add a .dev.vars file (see .dev.vars.example)
+      // and wrangler will inject those vars automatically.
+      args: 'wrangler pages dev dist --ip 0.0.0.0 --port 3000',
       cwd: '/home/user/webapp',
       env: {
         NODE_ENV: 'development',

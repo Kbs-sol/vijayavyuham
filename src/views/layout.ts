@@ -73,8 +73,9 @@ export function renderLayout(body: string, opts: LayoutOptions): string {
     ? socials.map((s) => `<a href="${escAttr(s.url)}" target="_blank" rel="noopener noreferrer" aria-label="${s.label}"><i class="fa-brands ${s.icon}"></i></a>`).join('')
     : '';
 
-  const langMenuHtml = LANGS.map((l) =>
-    `<a href="#" data-lang="${l.code}" class="${l.code === lang ? 'active' : ''}">${l.native}${l.code === lang ? ' <i class="fa-solid fa-check"></i>' : ''}</a>`
+  // Compact, always-visible segmented language toggle (clear one-tap UX)
+  const langSegHtml = LANGS.map((l) =>
+    `<button type="button" class="lang-seg${l.code === lang ? ' active' : ''}" data-lang="${l.code}" title="${escAttr(l.label)}" aria-label="${escAttr(l.label)}"${l.code === lang ? ' aria-current="true"' : ''}>${l.native}</button>`
   ).join('');
 
   // Floating contact
@@ -126,15 +127,12 @@ ${keywords ? `<meta name="keywords" content="${escAttr(keywords)}">` : ''}
 </head>
 <body data-lang="${lang}">
 
-<!-- Language intro overlay -->
-<div class="lang-intro" id="langIntro">
-  <div class="lang-intro-inner">
-    <img src="/static/logo.png" alt="Vijayavyuham">
-    <h2 class="serif">${t('lang_prompt', lang)}</h2>
-    <p class="sub">${t('lang_prompt_sub', lang)}</p>
-    <div class="lang-choices">
-      ${LANGS.map((l) => `<div class="lang-choice" data-lang="${l.code}"><div class="native">${l.native}</div><div class="en-name">${l.label}</div></div>`).join('')}
-    </div>
+<!-- Language prompt: non-intrusive bottom toast on first visit (does NOT block the page) -->
+<div class="lang-toast" id="langToast" role="region" aria-label="Choose language">
+  <button class="lang-toast-close" id="langToastClose" aria-label="Dismiss">&times;</button>
+  <div class="lang-toast-head"><i class="fa-solid fa-globe"></i> ${t('lang_prompt', lang)}</div>
+  <div class="lang-toast-choices">
+    ${LANGS.map((l) => `<button type="button" class="lang-toast-choice${l.code === lang ? ' active' : ''}" data-lang="${l.code}"><span class="native">${l.native}</span><span class="en-name">${l.label}</span></button>`).join('')}
   </div>
 </div>
 
@@ -149,10 +147,7 @@ ${keywords ? `<meta name="keywords" content="${escAttr(keywords)}">` : ''}
       <li class="mobile-only-cta"><a href="/contact" class="gold-text">${t('cta_enquire', lang)}</a></li>
     </ul>
     <div class="nav-actions">
-      <div class="lang-switch">
-        <button class="lang-btn" id="langBtn"><i class="fa-solid fa-globe"></i> ${LANGS.find((l) => l.code === lang)?.native}</button>
-        <div class="lang-menu" id="langMenu">${langMenuHtml}</div>
-      </div>
+      <div class="lang-seg-group" id="langSeg" role="group" aria-label="Language">${langSegHtml}</div>
       <a href="/contact" class="btn btn-gold hide-mobile" style="padding:10px 22px;">${t('cta_enquire', lang)}</a>
       <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
     </div>
