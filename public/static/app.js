@@ -27,10 +27,14 @@
   // Non-intrusive first-visit language toast (does NOT block the page)
   var toast = document.getElementById('langToast');
   if (toast) {
+    var autoHideTimer = null;
     if (!getLangCookie()) {
       setTimeout(function () { toast.classList.add('show'); }, 700);
+      // Auto-dismiss so the toast never lingers over content
+      autoHideTimer = setTimeout(function () { dismissToast(); }, 9000);
     }
     function dismissToast() {
+      if (autoHideTimer) { clearTimeout(autoHideTimer); autoHideTimer = null; }
       toast.classList.remove('show');
       // remember dismissal even if they didn't pick (default English stays)
       if (!getLangCookie()) document.cookie = 'vv_lang=en; path=/; max-age=' + (60 * 60 * 24 * 365);
@@ -96,6 +100,26 @@
       if (window.innerWidth > 768 && navLinks.classList.contains('open')) setMenu(false);
     });
   }
+
+  // ---------- FAQ accordion ----------
+  document.querySelectorAll('.faq-q').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.faq-item');
+      var panel = item ? item.querySelector('.faq-a') : null;
+      var isOpen = btn.getAttribute('aria-expanded') === 'true';
+      // Accordion behaviour: close siblings within the same list
+      var list = item ? item.closest('.faq-list') : null;
+      if (list && !isOpen) {
+        list.querySelectorAll('.faq-q[aria-expanded="true"]').forEach(function (o) {
+          o.setAttribute('aria-expanded', 'false');
+          var op = o.closest('.faq-item').querySelector('.faq-a');
+          if (op) op.classList.remove('open');
+        });
+      }
+      btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      if (panel) panel.classList.toggle('open', !isOpen);
+    });
+  });
 
   // ---------- Reveal on scroll ----------
   const revealEls = document.querySelectorAll('.reveal');

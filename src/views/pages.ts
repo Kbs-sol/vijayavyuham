@@ -4,7 +4,7 @@ import { escHtml, escAttr } from './layout';
 import { resolveEmbed } from '../lib/embed';
 
 // ---------- HERO / HOME ----------
-export function homePage(lang: Lang, settings: Record<string, string>, services: any[], blogs: any[], testimonials: any[]): string {
+export function homePage(lang: Lang, settings: Record<string, string>, services: any[], blogs: any[], testimonials: any[], faqs: any[] = []): string {
   const headline = settings[`hero_headline_${lang}`] || settings.hero_headline_en || '';
   const sub = settings[`hero_subtext_${lang}`] || settings.hero_subtext_en || '';
 
@@ -107,6 +107,8 @@ ${blogCards ? `
     <div style="text-align:center;margin-top:44px;"><a href="/blog" class="btn btn-ghost">${t('nav_blog', lang)}</a></div>
   </div>
 </section>` : ''}
+
+${faqHomeSection(lang, faqs)}
 
 ${ctaBand(lang)}
 `;
@@ -410,4 +412,79 @@ function pageHero(lang: Lang, title: string, sub: string, settings: Record<strin
     <p>${escHtml(sub)}</p>
   </div>
 </section>`;
+}
+
+// ---------- FAQ ----------
+// Accessible, SEO/AEO-friendly accordion. Answers stay in the DOM (visually
+// collapsed) so search & answer engines can read every answer.
+function faqAccordion(lang: Lang, faqs: any[]): string {
+  return faqs.map((f, i) => {
+    const q = loc(f, 'question', lang);
+    const a = loc(f, 'answer', lang);
+    if (!q) return '';
+    return `
+    <div class="faq-item reveal" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <button class="faq-q" type="button" aria-expanded="${i === 0 ? 'true' : 'false'}" aria-controls="faq-a-${i}">
+        <span itemprop="name">${escHtml(q)}</span>
+        <i class="fa-solid fa-chevron-down faq-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="faq-a${i === 0 ? ' open' : ''}" id="faq-a-${i}" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <div class="faq-a-inner" itemprop="text">${formatContent(a)}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Compact FAQ block used on the homepage (top N questions).
+export function faqHomeSection(lang: Lang, faqs: any[]): string {
+  const top = faqs.slice(0, 5);
+  if (!top.length) return '';
+  return `
+<section class="section faq-section" id="faq" itemscope itemtype="https://schema.org/FAQPage">
+  <div class="container" style="max-width:820px;">
+    <div class="section-head">
+      <span class="eyebrow" style="justify-content:center;">${t('faq_home_eyebrow', lang)}</span>
+      <h2>${t('faq_title', lang)}</h2>
+    </div>
+    <div class="faq-list">${faqAccordion(lang, top)}</div>
+    <div style="text-align:center;margin-top:36px;">
+      <a href="/faq" class="btn btn-ghost">${t('faq_title', lang)} <i class="fa-solid fa-arrow-right" style="margin-left:6px;"></i></a>
+    </div>
+  </div>
+</section>`;
+}
+
+// Dedicated /faq page (all questions, grouped-friendly single list).
+export function faqPage(lang: Lang, settings: Record<string, string>, faqs: any[]): string {
+  const list = faqs.length
+    ? `<div class="faq-list" itemscope itemtype="https://schema.org/FAQPage">${faqAccordion(lang, faqs)}</div>`
+    : `<p style="text-align:center;color:var(--text-faint);">${t('no_posts', lang)}</p>`;
+  return `
+${pageHero(lang, t('faq_title', lang), t('faq_sub', lang), settings)}
+<section class="section">
+  <div class="container" style="max-width:820px;">
+    ${list}
+    <div class="faq-cta reveal">
+      <p>${t('faq_cta_line', lang)}</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="/contact" class="btn btn-gold">${t('cta_enquire', lang)}</a>
+        <button class="btn btn-ghost" onclick="openEnquiry()">${t('quick_enquiry', lang)}</button>
+      </div>
+    </div>
+  </div>
+</section>
+${ctaBand(lang)}`;
+}
+
+// Build FAQPage structured data (for AEO / rich results).
+export function faqJsonLd(lang: Lang, faqs: any[]): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.filter((f) => loc(f, 'question', lang)).map((f) => ({
+      '@type': 'Question',
+      name: loc(f, 'question', lang),
+      acceptedAnswer: { '@type': 'Answer', text: loc(f, 'answer', lang) },
+    })),
+  };
 }

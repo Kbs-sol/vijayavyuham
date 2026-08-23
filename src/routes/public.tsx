@@ -7,6 +7,7 @@ import { renderLayout } from '../views/layout';
 import {
   homePage, aboutPage, servicesPage, serviceDetailPage,
   blogListPage, blogDetailPage, galleryPage, teamPage, contactPage,
+  faqPage, faqJsonLd,
 } from '../views/pages';
 import { t, loc } from '../lib/i18n';
 
@@ -27,6 +28,21 @@ function resolveLang(c: any): Lang {
 
 async function getActiveServices(store: ReturnType<typeof getStore>) {
   return store.list('services', { where: { is_active: 1 }, orderBy: [['sort_order', 'asc'], ['id', 'asc']] });
+}
+
+async function getActiveFaqs(store: ReturnType<typeof getStore>) {
+  return store.list('faqs', { where: { is_active: 1 }, orderBy: [['sort_order', 'asc'], ['id', 'asc']] });
+}
+
+// BreadcrumbList structured data — helps search engines show breadcrumb rich results
+function breadcrumbLd(items: Array<{ name: string; path: string }>) {
+  return {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem', position: i + 1, name: it.name,
+      item: `${SITE_URL}${it.path}`,
+    })),
+  };
 }
 
 function notEnabled(c: any, settings: Record<string, string>, lang: Lang) {
@@ -52,16 +68,47 @@ app.get('/', async (c) => {
     ? await store.list('blogs', { where: { is_published: 1 }, orderBy: [['published_at', 'desc']], limit: 3 })
     : [];
   const testimonials = await store.list('testimonials', { where: { is_active: 1 }, orderBy: [['sort_order', 'asc']], limit: 2 });
+  const faqs = await getActiveFaqs(store);
 
   const title = `Vijayavyuham · ${lang === 'te' ? 'తెలుగు రాష్ట్రాల రాజకీయ ప్రచార భాగస్వామి' : lang === 'hi' ? 'तेलुगु राज्यों का राजनीतिक अभियान भागीदार' : 'Political Campaign Consultancy for Telangana & Andhra Pradesh'}`;
   const desc = settings[`meta_description_${lang}`] || settings.meta_description_en || '';
 
-  return c.html(renderLayout(homePage(lang, settings, services, blogs, testimonials), {
+  return c.html(renderLayout(homePage(lang, settings, services, blogs, testimonials, faqs), {
     title, description: desc, lang, path: '/', settings,
     keywords: settings.meta_keywords,
-    jsonLd: [{
-      '@context': 'https://schema.org', '@type': 'WebSite', name: 'Vijayavyuham', url: SITE_URL,
-    }],
+    jsonLd: [
+      {
+        '@context': 'https://schema.org', '@type': 'WebSite', name: 'Vijayavyuham', url: SITE_URL,
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: `${SITE_URL}/blog?q={search_term_string}`,
+          'query-input': 'required name=search_term_string',
+        },
+      },
+      ...(faqs.length ? [faqJsonLd(lang, faqs.slice(0, 5))] : []),
+    ],
+  }));
+});
+
+// ---------- FAQ ----------
+app.get('/faq', async (c) => {
+  const lang = resolveLang(c);
+  const store = getStore(c.env);
+  const settings = await store.getSettings();
+  const faqs = await getActiveFaqs(store);
+  const title = `${t('faq_title', lang)} · Vijayavyuham`;
+  const desc = lang === 'te'
+    ? 'విజయవ్యూహం రాజకీయ ప్రచార కన్సల్టెన్సీ గురించి తరచుగా అడిగే ప్రశ్నలు — తెలంగాణ & ఆంధ్రప్రదేశ్.'
+    : lang === 'hi'
+      ? 'विजयव्यूहम राजनीतिक अभियान कंसल्टेंसी के बारे में अक्सर पूछे जाने वाले प्रश्न — तेलंगाना और आंध्र प्रदेश।'
+      : 'Frequently asked questions about Vijayavyuham political campaign consultancy — voter research, booth management, digital outreach and elections in Telangana & Andhra Pradesh.';
+  return c.html(renderLayout(faqPage(lang, settings, faqs), {
+    title, description: desc, lang, path: '/faq', settings,
+    keywords: `political consultancy FAQ, election campaign questions Telangana Andhra Pradesh, ${settings.meta_keywords || ''}`,
+    jsonLd: [
+      breadcrumbLd([{ name: t('nav_home', lang), path: '/' }, { name: t('faq_title', lang), path: '/faq' }]),
+      ...(faqs.length ? [faqJsonLd(lang, faqs)] : []),
+    ],
   }));
 });
 
@@ -75,6 +122,7 @@ app.get('/about', async (c) => {
   return c.html(renderLayout(aboutPage(lang, settings), {
     title, description: settings[`about_body_${lang}`]?.slice(0, 160) || '', lang, path: '/about', settings,
     keywords: settings.meta_keywords,
+    jsonLd: [breadcrumbLd([{ name: t('nav_home', lang), path: '/' }, { name: t('nav_about', lang), path: '/about' }])],
   }));
 });
 
@@ -97,7 +145,8 @@ app.get('/services', async (c) => {
   };
   return c.html(renderLayout(servicesPage(lang, settings, services), {
     title, description: desc, lang, path: '/services', settings,
-    keywords: settings.meta_keywords, jsonLd: [itemListLd],
+    keywords: settings.meta_keywords,
+    jsonLd: [breadcrumbLd([{ name: t('nav_home', lang), path: '/' }, { name: t('nav_services', lang), path: '/services' }]), itemListLd],
   }));
 });
 
@@ -123,7 +172,15 @@ app.get('/services/:slug', async (c) => {
   };
   return c.html(renderLayout(serviceDetailPage(lang, settings, s, others), {
     title, description: desc, lang, path: `/services/${slug}`, settings,
-    keywords: `${loc(s, 'title', 'en')}, ${settings.meta_keywords}`, jsonLd: [serviceLd],
+    keywords: `${loc(s, 'title', 'en')}, ${settings.meta_keywords}`,
+    jsonLd: [
+      breadcrumbLd([
+        { name: t('nav_home', lang), path: '/' },
+        { name: t('nav_services', lang), path: '/services' },
+        { name: loc(s, 'title', lang), path: `/services/${slug}` },
+      ]),
+      serviceLd,
+    ],
   }));
 });
 
@@ -138,6 +195,7 @@ app.get('/blog', async (c) => {
   return c.html(renderLayout(blogListPage(lang, settings, blogs), {
     title, description: 'Insights on political campaign strategy, voter research, and digital politics in Telangana and Andhra Pradesh.', lang, path: '/blog', settings,
     keywords: settings.meta_keywords,
+    jsonLd: [breadcrumbLd([{ name: t('nav_home', lang), path: '/' }, { name: t('nav_blog', lang), path: '/blog' }])],
   }));
 });
 
@@ -156,14 +214,25 @@ app.get('/blog/:slug', async (c) => {
   const articleLd = {
     '@context': 'https://schema.org', '@type': 'BlogPosting',
     headline: loc(b, 'title', lang), description: loc(b, 'excerpt', lang),
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blog/${slug}` },
     author: { '@type': 'Organization', name: (b.author as string) || 'Vijayavyuham' },
     publisher: { '@type': 'Organization', name: 'Vijayavyuham', logo: { '@type': 'ImageObject', url: `${SITE_URL}/static/logo.png` } },
-    datePublished: b.published_at, ...(b.cover_image ? { image: b.cover_image } : {}),
+    inLanguage: lang, datePublished: b.published_at,
+    dateModified: (b.updated_at as string) || (b.published_at as string),
+    ...(b.cover_image ? { image: b.cover_image } : {}),
   };
   return c.html(renderLayout(blogDetailPage(lang, settings, b, related), {
     title, description: desc, lang, path: `/blog/${slug}`, settings,
     keywords: (b.keywords as string) || settings.meta_keywords,
-    ogImage: (b.cover_image as string) || undefined, jsonLd: [articleLd],
+    ogImage: (b.cover_image as string) || undefined,
+    jsonLd: [
+      breadcrumbLd([
+        { name: t('nav_home', lang), path: '/' },
+        { name: t('nav_blog', lang), path: '/blog' },
+        { name: loc(b, 'title', lang), path: `/blog/${slug}` },
+      ]),
+      articleLd,
+    ],
   }));
 });
 
@@ -214,6 +283,7 @@ app.get('/sitemap.xml', async (c) => {
   const base = SITE_URL;
   const urls: string[] = ['/'];
   ['about', 'services', 'blog', 'gallery', 'team', 'contact'].forEach((p) => { if (pageEnabled(settings, p)) urls.push('/' + p); });
+  urls.push('/faq'); // always available (built-in content)
   const services = await getActiveServices(store);
   if (pageEnabled(settings, 'services')) services.forEach((s) => urls.push('/services/' + s.slug));
   if (pageEnabled(settings, 'blog')) {

@@ -24,6 +24,7 @@ for Telangana & Andhra Pradesh, with a built-in admin panel.
 | `/about` | About |
 | `/services` · `/services/:slug` | Services list + detail |
 | `/blog` · `/blog/:slug` | Blog list + post |
+| `/faq` | Frequently Asked Questions (FAQPage schema, trilingual, always on) |
 | `/gallery` | Media gallery (**disabled by default** — enable in admin) |
 | `/team` | Team (**disabled by default** — enable in admin) |
 | `/contact` | Contact + enquiry form |

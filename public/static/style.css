@@ -28,6 +28,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;         /* offset anchor jumps below the fixed header */
   -webkit-text-size-adjust: 100%;   /* stop iOS auto-inflating text */
   text-size-adjust: 100%;
 }
@@ -382,6 +383,43 @@ p { margin: 0 0 1rem; color: var(--text-dim); }
 .feature-list { list-style: none; padding: 0; margin: 30px 0; }
 .feature-list li { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--gold-line); font-size: 1.05rem; color: var(--text); }
 .feature-list li i { color: var(--gold); }
+
+/* ---------- FAQ ACCORDION ---------- */
+.faq-section { background: var(--black-2); }
+.faq-list { display: flex; flex-direction: column; gap: 14px; }
+.faq-item {
+  border: 1px solid var(--gold-line);
+  border-radius: 10px;
+  background: rgba(255,255,255,.015);
+  overflow: hidden;
+  transition: border-color .3s ease, background .3s ease;
+}
+.faq-item:hover { border-color: rgba(201,162,75,.4); }
+.faq-item:has(.faq-a.open) { border-color: rgba(201,162,75,.55); background: rgba(201,162,75,.04); }
+.faq-q {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  padding: 22px 24px; background: none; border: 0; cursor: pointer; text-align: left;
+  font-family: var(--serif); font-size: 1.18rem; font-weight: 600; color: var(--champagne);
+  line-height: 1.45;
+}
+.faq-q:hover { color: var(--gold-bright); }
+.faq-chevron { color: var(--gold); font-size: .9rem; flex-shrink: 0; transition: transform .35s cubic-bezier(.4,0,.2,1); }
+.faq-q[aria-expanded="true"] .faq-chevron { transform: rotate(180deg); }
+.faq-a {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows .35s cubic-bezier(.4,0,.2,1);
+}
+.faq-a.open { grid-template-rows: 1fr; }
+.faq-a-inner { overflow: hidden; min-height: 0; }
+.faq-a.open .faq-a-inner { padding: 0 24px 24px; }
+.faq-a-inner p { color: var(--text-dim); line-height: 1.85; margin: 0 0 12px; }
+.faq-a-inner p:last-child { margin-bottom: 0; }
+.faq-cta {
+  margin-top: 48px; text-align: center; padding: 40px 24px;
+  border: 1px dashed var(--gold-line); border-radius: 12px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(201,162,75,.06), transparent 70%);
+}
+.faq-cta p { font-family: var(--serif); font-size: 1.3rem; color: var(--champagne); margin: 0 0 22px; }
 
 /* ============================================================
    RESPONSIVE  —  mobile-first optimized experience

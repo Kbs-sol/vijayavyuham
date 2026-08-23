@@ -24,9 +24,11 @@ function navItems(settings: Record<string, string>, lang: Lang) {
     { href: '/blog', key: 'nav_blog', page: 'blog' },
     { href: '/gallery', key: 'nav_gallery', page: 'gallery' },
     { href: '/team', key: 'nav_team', page: 'team' },
+    { href: '/faq', key: 'nav_faq', page: 'faq' },
     { href: '/contact', key: 'nav_contact', page: 'contact' },
   ];
-  return items.filter((i) => i.page === 'home' || pageEnabled(settings, i.page));
+  // 'home' and 'faq' are always available (FAQ ships with built-in content).
+  return items.filter((i) => i.page === 'home' || i.page === 'faq' || pageEnabled(settings, i.page));
 }
 
 export function renderLayout(body: string, opts: LayoutOptions): string {
@@ -140,7 +142,7 @@ ${keywords ? `<meta name="keywords" content="${escAttr(keywords)}">` : ''}
   <div class="container nav">
     <a class="brand" href="/">
       <img src="/static/logo.png" alt="${escAttr(siteName)} logo">
-      <span class="brand-name">${escHtml(siteName)}<small>${t('serving', lang)}</small></span>
+      <span class="brand-name">${escHtml(siteName)}<small>${escHtml(settings[`tagline_${lang}`] || settings.tagline_en || 'Strategy • Intelligence • Impact')}</small></span>
     </a>
     <ul class="nav-links" id="navLinks">
       ${navLinksHtml}
