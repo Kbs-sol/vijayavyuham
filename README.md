@@ -54,7 +54,13 @@ for Telangana & Andhra Pradesh, with a built-in admin panel.
      iOS-zoom-safe forms, ≥44px touch targets)
 - ✅ Relocated language switcher (segmented header toggle + non-intrusive
      first-visit bottom toast; in mobile the toggle lives in the drawer)
-- ✅ SEO: canonical, hreflang, Open Graph, Twitter, JSON-LD, sitemap
+- ✅ FAQ system — `/faq` page + home teaser, trilingual, accessible
+     accordion; ships with 10 built-in answers (always available)
+- ✅ SEO / AEO / GEO: canonical, hreflang, Open Graph, Twitter cards, geo
+     meta (IN-TG / IN-AP), sitemap, robots.txt, and JSON-LD structured data —
+     `ProfessionalService`, `WebSite` + `SearchAction`, `ItemList`, `Service`,
+     `BlogPosting` (with `dateModified` / `mainEntityOfPage`), `FAQPage`
+     (+ inline schema.org microdata) and `BreadcrumbList` on every sub-page
 - ✅ Zero-service deployable — builds & deploys to Cloudflare even with
      nothing connected
 
@@ -105,7 +111,7 @@ Set them as **Cloudflare Pages secrets** in production — never in code.
 - **Status**: ✅ Active
 - **Tech stack**: Hono + TypeScript + Vite + Cloudflare Pages; Supabase (optional)
 - **Bindings**: none required (D1 removed) — deploys with zero services
-- **Last Updated**: 2026-08-23
+- **Last Updated**: 2026-08-24
 
 ## Local development
 ```bash
