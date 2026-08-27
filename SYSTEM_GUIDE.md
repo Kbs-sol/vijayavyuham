@@ -42,8 +42,8 @@ getStore(env):
 ```
 
 ### Offline mode (nothing connected)
-- Data is seeded from `src/lib/seed-data.ts` (13 services, 3 blogs,
-  2 testimonials, all site settings).
+- Data is seeded from `src/lib/seed-data.ts` (13 services, 8 blog posts,
+  10 FAQs, testimonials, all site settings).
 - Kept in memory for the life of the worker instance. Admin edits are
   visible during the session but **reset** when the instance recycles.
 - Admin login works with the built-in demo credentials (below).
@@ -91,9 +91,17 @@ Admin panel: `http://localhost:3000/studio`
 
 That's it — the site is now backed by your database.
 
-> **Regenerating the SQL:** `supabase/schema.sql` is generated from
-> `src/lib/seed-data.ts`. If you change the seed data, run
-> `node scripts/gen-supabase-sql.mjs` to rebuild the SQL.
+> **Regenerating the SQL (source-of-truth chain):** the single source of
+> truth for default content is **`seed.sql`**. Two generators derive the
+> rest — always run **both, in order**, after editing `seed.sql`:
+> ```bash
+> python3 scripts/gen-seed.py          # seed.sql        -> src/lib/seed-data.ts
+> node    scripts/gen-supabase-sql.mjs # src/lib/seed-data.ts -> supabase/schema.sql
+> ```
+> `gen-seed.py` reads **every** `INSERT OR REPLACE INTO <table>` block for a
+> table (so you can split content across multiple INSERTs) and also applies
+> simple `UPDATE <table> SET col='…' WHERE slug='…'` statements — this is how
+> blog cover images are attached without rewriting the original INSERT.
 
 > **Security note:** the `service_role` key bypasses row-level security and
 > is used **server-side only** inside the Worker. It is never sent to the
@@ -126,6 +134,27 @@ link, paste it. Done.
 
 The gallery page is **disabled by default** (`page_gallery = 0`). Enable it
 from the admin panel (Settings → page toggles) once you've added items.
+
+### Built-in non-partisan imagery (bundled with the site)
+
+The homepage hero, the **"Built for every kind of political engagement"**
+section (`#who-we-work-with`), and every blog **cover image** use bundled
+illustrative photos in `public/static/img/`:
+
+| File                          | Used on                              |
+|-------------------------------|--------------------------------------|
+| `parties-rally.jpg`           | homepage hero visual + blog covers   |
+| `parties-ap.jpg`              | engagement-section banner + covers   |
+| `parties-telangana.jpg`       | blog covers                          |
+
+**Non-partisan by design.** Every image shows **multiple rival parties
+equally** (never one party alone) and each is captioned with a disclaimer:
+*"We work with all parties and independents. Party symbols shown are for
+illustration only and imply no endorsement."* When adding or replacing any
+party imagery, keep this rule — the brand is deliberately neutral. To swap an
+image, drop a replacement of the same name into `public/static/img/`, or
+point a blog's `cover_image` at a new `/static/img/…` path (via `seed.sql`
+UPDATE + regenerate, or the admin panel once connected).
 
 ---
 
@@ -205,7 +234,117 @@ in offline demo mode until you add the Supabase secrets.
 
 ---
 
-## 9. Project structure
+## 9. Taking it to production (go-live checklist)
+
+The site is safe to ship at any moment (it degrades to offline demo mode),
+but here is the recommended path to a **fully-integrated production build**,
+in order.
+
+### Step 1 — Connect the database (permanent content)
+1. Create a Supabase project (§4).
+2. Run `supabase/schema.sql` in the Supabase SQL Editor → creates tables +
+   loads the 13 services / 8 blogs / 10 FAQs / testimonials / settings.
+3. Add `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` as Cloudflare secrets (§7).
+4. Redeploy. Confirm the admin dashboard **storage** badge reads `supabase`
+   (or `GET /api/admin/stats` → `"storage":"supabase"`).
+
+### Step 2 — Lock down the admin panel
+1. Set a strong, unique `SESSION_SECRET` (any long random string).
+2. Override `ADMIN_DEV_PASSWORD` and `ADMIN_MGR_PASSWORD` — **never** ship the
+   demo defaults.
+3. Log in once with each role to confirm the new passwords work.
+
+### Step 3 — Real content & media
+- Replace demo blog/service copy in the admin panel (or edit `seed.sql` and
+  regenerate — see §4).
+- Add gallery items as Cloudinary/YouTube links (§5) and enable the gallery
+  page toggle.
+- Swap the bundled party imagery for your own **non-partisan** photos if
+  desired (§5), keeping the disclaimer captions.
+
+### Step 4 — Brand, contact & social
+- In the admin **Settings**: business name, phone, WhatsApp number, email,
+  address, and social links. These feed the header, footer, floating action
+  buttons, and the `ProfessionalService` JSON-LD.
+
+### Step 5 — Custom domain (recommended for SEO)
+1. Cloudflare Pages → your project → **Custom domains** → add e.g.
+   `vijayavyuham.com`.
+2. Update `SITE_URL` in `src/routes/public.tsx` to the final origin so
+   canonical URLs, `hreflang`, Open Graph, sitemap, and JSON-LD all emit the
+   real domain, then redeploy.
+3. Submit `https://<domain>/sitemap.xml` in Google Search Console and Bing
+   Webmaster Tools.
+
+### Step 6 — Third-party services (optional, all via REST from the Worker)
+Because this runs on Cloudflare Workers, any heavier capability is added as a
+**server-side REST call** inside a Hono route (keep every token in a
+Cloudflare secret, never in the browser):
+
+| Need                    | Suggested service (REST)         | Where it plugs in                    |
+|-------------------------|----------------------------------|--------------------------------------|
+| Email enquiry alerts    | Resend / SendGrid / Mailgun      | `routes/public-api.ts` `/api/enquiry`|
+| WhatsApp/SMS/IVR        | Twilio / Gupshup / Meta Cloud API| new route in `routes/public-api.ts`  |
+| Analytics               | Cloudflare Web Analytics / Plausible | `<script>` in `views/layout.ts`  |
+| Captcha / spam guard    | Cloudflare Turnstile             | contact form + `/api/enquiry`        |
+| Error monitoring        | Sentry (edge SDK)                | `src/index.tsx` app-level handler    |
+
+Pattern for any of them:
+```ts
+// inside a Hono route — env.MY_TOKEN comes from a Cloudflare secret
+const res = await fetch('https://api.provider.com/v1/…', {
+  method: 'POST',
+  headers: { Authorization: `Bearer ${c.env.MY_TOKEN}`, 'content-type': 'application/json' },
+  body: JSON.stringify(payload),
+});
+```
+
+### Step 7 — Final verification
+- `npm run build` is clean; all public routes return **200**.
+- `robots.txt` and `sitemap.xml` load and list every page.
+- Test the three languages (`?lang=en|te|hi`) and the contact form end-to-end.
+- Run the deployed URL through Google's Rich Results Test to confirm the
+  structured data (below) is valid.
+
+---
+
+## 10. SEO / AEO / GEO stack (what's built in)
+
+The site ships search-, answer-, and geo-optimized out of the box. All of it
+is emitted server-side in `views/layout.ts` and `routes/public.tsx`.
+
+**Classic SEO**
+- Per-page `<title>`, meta description, and keywords (editable per blog/service).
+- **Canonical** URL + **`hreflang`** alternates for `en` / `te` / `hi` on every page.
+- **Open Graph** + **Twitter Card** tags (blog covers become the share image).
+- `sitemap.xml` (all pages, all languages) and `robots.txt`.
+- Semantic HTML, mobile-first, fast edge delivery, lazy-loaded images.
+
+**AEO (Answer-Engine Optimization)** — helps Google's AI answers, Perplexity, etc.
+- **FAQPage** JSON-LD + inline microdata on `/faq` and the homepage FAQ block.
+- **BlogPosting** JSON-LD on every article, enriched with `dateModified`,
+  `mainEntityOfPage`, `inLanguage`, and the cover `image`.
+- **BreadcrumbList** JSON-LD on every sub-page (Home → section → item).
+- **WebSite** + **SearchAction**, **ItemList** (services), **Service** JSON-LD.
+- **ProfessionalService** organization schema in the layout (name, area served,
+  contact, socials — driven by admin settings).
+
+**GEO (geographic targeting)**
+- `geo.region` meta for **IN-TG** (Telangana) and **IN-AP** (Andhra Pradesh),
+  plus place-name signals throughout copy and metadata.
+- `areaServed` on the organization schema.
+
+**Organic-traffic content layer**
+- 8 authority blog posts (exit polls, psephology, survey methodology,
+  booth strategy, digital outreach, choosing a consultant, etc.) — trilingual,
+  keyword-targeted, and cross-linked, so the blog acts as a topical hub.
+
+> **After changing the domain**, update `SITE_URL` in
+> `src/routes/public.tsx` so every canonical/OG/sitemap/JSON-LD URL is correct.
+
+---
+
+## 11. Project structure
 
 ```
 src/
@@ -239,7 +378,7 @@ migrations/            legacy D1 schema (reference only; D1 no longer used)
 
 ---
 
-## 10. Language UX
+## 12. Language UX
 
 - A compact **segmented toggle** (EN · తె · हि) is always visible: in the
   header on desktop, and inside the mobile menu drawer on phones.
@@ -250,7 +389,7 @@ migrations/            legacy D1 schema (reference only; D1 no longer used)
 
 ---
 
-## 11. Mobile-first design
+## 13. Mobile-first design
 
 - Base styles target phones; larger layouts are progressive enhancements.
 - Touch targets are ≥44px; form inputs use 16px font to stop iOS auto-zoom.
@@ -260,7 +399,7 @@ migrations/            legacy D1 schema (reference only; D1 no longer used)
 
 ---
 
-## 12. Common questions
+## 14. Common questions
 
 **Q: I deployed but see demo content — is it broken?**
 No. That's offline mode. Add `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` secrets

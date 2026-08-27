@@ -56,17 +56,31 @@ for Telangana & Andhra Pradesh, with a built-in admin panel.
      first-visit bottom toast; in mobile the toggle lives in the drawer)
 - ✅ FAQ system — `/faq` page + home teaser, trilingual, accessible
      accordion; ships with 10 built-in answers (always available)
+- ✅ "Built for every kind of political engagement" section
+     (`#who-we-work-with`) — 6 audience cards (parties, independents,
+     first-time contestants, sitting MPs/MLAs, local-body candidates,
+     advocacy orgs) + a **non-partisan** all-party banner and disclaimer
+- ✅ Homepage hero split layout with a non-partisan all-party visual
+- ✅ Bundled non-partisan imagery (`public/static/img/parties-*.jpg`) used
+     across the hero, engagement banner, and every blog cover — always shows
+     **multiple rival parties equally**, with an "illustration only, no
+     endorsement" disclaimer
+- ✅ 8 trilingual authority blog posts (exit polls, psephology, survey
+     methodology, booth strategy, digital outreach, choosing a consultant,
+     YouTube/social campaigns…) each with a cover image — an SEO topical hub
 - ✅ SEO / AEO / GEO: canonical, hreflang, Open Graph, Twitter cards, geo
      meta (IN-TG / IN-AP), sitemap, robots.txt, and JSON-LD structured data —
      `ProfessionalService`, `WebSite` + `SearchAction`, `ItemList`, `Service`,
-     `BlogPosting` (with `dateModified` / `mainEntityOfPage`), `FAQPage`
-     (+ inline schema.org microdata) and `BreadcrumbList` on every sub-page
+     `BlogPosting` (with `dateModified` / `mainEntityOfPage` / `inLanguage` /
+     cover `image`), `FAQPage` (+ inline schema.org microdata) and
+     `BreadcrumbList` on every sub-page
 - ✅ Zero-service deployable — builds & deploys to Cloudflare even with
      nothing connected
 
 ## Data Architecture
-- **Data models**: `settings` (key/value), `services`, `blogs`, `gallery`
-  (uses `media_url` + `media_type`), `team`, `testimonials`, `enquiries`.
+- **Data models**: `settings` (key/value), `services`, `blogs` (incl.
+  `cover_image`), `gallery` (uses `media_url` + `media_type`), `team`,
+  `testimonials`, `faqs`, `enquiries`.
   Localized text columns are suffixed `_en` / `_te` / `_hi`.
 - **Storage services**:
   - **Supabase (PostgreSQL)** via REST/PostgREST when `SUPABASE_URL` +
@@ -111,7 +125,7 @@ Set them as **Cloudflare Pages secrets** in production — never in code.
 - **Status**: ✅ Active
 - **Tech stack**: Hono + TypeScript + Vite + Cloudflare Pages; Supabase (optional)
 - **Bindings**: none required (D1 removed) — deploys with zero services
-- **Last Updated**: 2026-08-24
+- **Last Updated**: 2026-08-27
 
 ## Local development
 ```bash
@@ -119,8 +133,14 @@ npm install
 npm run build
 npm run dev:sandbox     # http://localhost:3000
 ```
-Regenerate derived files after editing seed content:
+Regenerate derived files after editing seed content (`seed.sql` is the single
+source of truth — run **both**, in order):
 ```bash
-python scripts/gen-seed.py          # seed.sql        -> src/lib/seed-data.ts
+python3 scripts/gen-seed.py         # seed.sql        -> src/lib/seed-data.ts
 node scripts/gen-supabase-sql.mjs   # src/lib/seed... -> supabase/schema.sql
 ```
+`gen-seed.py` consumes every `INSERT OR REPLACE` block per table and applies
+`UPDATE … SET … WHERE slug=…` statements (used to attach blog cover images).
+
+See **[SYSTEM_GUIDE.md](SYSTEM_GUIDE.md)** for the full production go-live
+checklist, services-integration patterns, and the SEO/AEO/GEO breakdown.
