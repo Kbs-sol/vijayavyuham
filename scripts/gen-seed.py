@@ -7,11 +7,28 @@ import re, json, os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sql = open(os.path.join(ROOT,'seed.sql'), encoding='utf-8').read()
 
-def grab_block(sql, table):
-    m = re.search(r'INSERT OR REPLACE INTO '+table+r'\s*\((.*?)\)\s*VALUES', sql, re.S)
-    cols = [c.strip() for c in m.group(1).split(',')]
-    rest = sql[m.end():]
-    return cols, rest[:rest.index(';\n')]
+def grab_blocks(sql, table):
+    """Yield (cols, body) for EVERY `INSERT OR REPLACE INTO <table> (...) VALUES ...;`
+    block so multiple INSERT statements per table are all consumed."""
+    out = []
+    for m in re.finditer(r'INSERT OR REPLACE INTO '+table+r'\s*\((.*?)\)\s*VALUES', sql, re.S):
+        cols = [c.strip() for c in m.group(1).split(',')]
+        rest = sql[m.end():]
+        body = rest[:rest.index(';\n')]
+        out.append((cols, body))
+    return out
+
+def grab_updates(sql, table):
+    """Parse simple `UPDATE <table> SET col = 'val' WHERE slug = 'x' ...;` statements.
+    Returns list of (set_col, set_val, slug)."""
+    ups = []
+    pat = re.compile(
+        r"UPDATE\s+" + table + r"\s+SET\s+(\w+)\s*=\s*'((?:[^']|'')*)'\s+WHERE\s+slug\s*=\s*'((?:[^']|'')*)'",
+        re.S | re.I)
+    for m in pat.finditer(sql):
+        col, val, slug = m.group(1), m.group(2).replace("''", "'"), m.group(3).replace("''", "'")
+        ups.append((col.strip(), val, slug))
+    return ups
 
 def split_rows(body):
     rows=[]; depth=0; cur=''; inq=False; i=0
@@ -52,8 +69,20 @@ def conv(v):
 
 raw={}
 for table in ['settings','services','testimonials','blogs','faqs']:
-    cols, body = grab_block(sql, table)
-    raw[table]=[{c:conv(f) for c,f in zip(cols, split_fields(r))} for r in split_rows(body)]
+    rows=[]
+    for cols, body in grab_blocks(sql, table):
+        rows += [{c:conv(f) for c,f in zip(cols, split_fields(r))} for r in split_rows(body)]
+    raw[table]=rows
+
+# Apply UPDATE ... SET col = 'val' WHERE slug = 'x' statements (matched by slug).
+for table in ['blogs']:
+    updates = grab_updates(sql, table)
+    if not updates: continue
+    by_slug = {r.get('slug'): r for r in raw[table] if 'slug' in r}
+    for col, val, slug in updates:
+        row = by_slug.get(slug)
+        if row is not None and not row.get(col):
+            row[col] = val
 
 settings={row['key']: row['value'] for row in raw['settings']}
 def norm(rows, defaults, idx_from=1):

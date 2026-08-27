@@ -36,6 +36,21 @@ export function homePage(lang: Lang, settings: Record<string, string>, services:
       <p>${escHtml(w.desc[lang])}</p>
     </div>`).join('');
 
+  const audiences = [
+    { icon: 'fa-landmark-flag', title: { en: 'Political Parties', te: 'రాజకీయ పార్టీలు', hi: 'राजनीतिक दल' }, desc: { en: 'State-level and district-level strategy support, from seat analysis to full campaign execution.', te: 'సీటు విశ్లేషణ నుండి పూర్తి ప్రచార అమలు వరకు రాష్ట్ర & జిల్లా స్థాయి వ్యూహ మద్దతు.', hi: 'सीट विश्लेषण से लेकर पूर्ण अभियान निष्पादन तक राज्य और जिला-स्तरीय रणनीति समर्थन।' } },
+    { icon: 'fa-user-tie', title: { en: 'Independent Candidates', te: 'స్వతంత్ర అభ్యర్థులు', hi: 'निर्दलीय उम्मीदवार' }, desc: { en: 'End-to-end campaign build for candidates entering the field without existing party machinery.', te: 'పార్టీ యంత్రాంగం లేకుండా బరిలోకి దిగే అభ్యర్థులకు సంపూర్ణ ప్రచార నిర్మాణం.', hi: 'मौजूदा दल तंत्र के बिना मैदान में उतरने वाले उम्मीदवारों के लिए संपूर्ण अभियान निर्माण।' } },
+    { icon: 'fa-seedling', title: { en: 'First-Time Contestants', te: 'తొలిసారి పోటీదారులు', hi: 'पहली बार के प्रत्याशी' }, desc: { en: 'Guidance for new entrants who need to build recognition, trust and ground presence quickly.', te: 'గుర్తింపు, నమ్మకం & క్షేత్ర ఉనికిని వేగంగా నిర్మించాల్సిన కొత్తవారికి మార్గదర్శకత్వం.', hi: 'नए प्रवेशकों के लिए मार्गदर्शन जिन्हें जल्दी पहचान, विश्वास और जमीनी उपस्थिति बनानी है।' } },
+    { icon: 'fa-people-roof', title: { en: 'Sitting MPs & MLAs', te: 'ప్రస్తుత ఎంపీలు & ఎమ్మెల్యేలు', hi: 'मौजूदा सांसद और विधायक' }, desc: { en: 'Constituency communication and delivery-based messaging to support re-election efforts.', te: 'తిరిగి ఎన్నికల కోసం నియోజకవర్గ కమ్యూనికేషన్ & పనితీరు ఆధారిత సందేశం.', hi: 'पुनः चुनाव प्रयासों के लिए निर्वाचन क्षेत्र संचार और डिलीवरी-आधारित संदेश।' } },
+    { icon: 'fa-city', title: { en: 'Local Body & GHMC Candidates', te: 'స్థానిక సంస్థ & GHMC అభ్యర్థులు', hi: 'स्थानीय निकाय और GHMC उम्मीदवार' }, desc: { en: 'Ward and division-level strategy for municipal, corporation and panchayat elections.', te: 'మున్సిపల్, కార్పొరేషన్ & పంచాయతీ ఎన్నికలకు వార్డు & డివిజన్ స్థాయి వ్యూహం.', hi: 'नगरपालिका, निगम और पंचायत चुनावों के लिए वार्ड और डिवीजन-स्तरीय रणनीति।' } },
+    { icon: 'fa-handshake-angle', title: { en: 'Political & Advocacy Organizations', te: 'రాజకీయ & న్యాయవాద సంస్థలు', hi: 'राजनीतिक और वकालत संगठन' }, desc: { en: 'Research, communication and outreach support for organizations working on public issues.', te: 'ప్రజా సమస్యలపై పనిచేసే సంస్థలకు పరిశోధన, కమ్యూనికేషన్ & ఔట్‌రీచ్ మద్దతు.', hi: 'सार्वजनिक मुद्दों पर काम करने वाले संगठनों के लिए अनुसंधान, संचार और आउटरीच समर्थन।' } },
+  ];
+  const audienceCards = audiences.map((a) => `
+    <article class="audience-card reveal">
+      <span class="audience-ico"><i class="fa-solid ${a.icon}"></i></span>
+      <h3>${escHtml(a.title[lang])}</h3>
+      <p>${escHtml(a.desc[lang])}</p>
+    </article>`).join('');
+
   const blogCards = blogs.slice(0, 3).map((b) => blogCard(b, lang)).join('');
   const testiCards = testimonials.slice(0, 2).map((tt) => `
     <div class="testi reveal">
@@ -45,9 +60,9 @@ export function homePage(lang: Lang, settings: Record<string, string>, services:
     </div>`).join('');
 
   return `
-<section class="hero">
+<section class="hero has-visual">
   <img class="hero-bg-star" src="/static/logo.png" alt="">
-  <div class="container">
+  <div class="container hero-grid">
     <div class="hero-inner">
       <span class="eyebrow reveal in">${t('hero_eyebrow', lang)}</span>
       <h1 class="reveal in">${escHtml(headline)}</h1>
@@ -60,6 +75,11 @@ export function homePage(lang: Lang, settings: Record<string, string>, services:
         ${trust.map((tr) => `<div class="item"><div class="k"><i class="fa-solid ${tr.icon}"></i> ${escHtml(tr.k[lang])}</div></div>`).join('')}
       </div>
     </div>
+    <figure class="hero-visual reveal in">
+      <img src="/static/img/parties-rally.jpg" width="1024" height="614" fetchpriority="high" decoding="async"
+        alt="${lang === 'te' ? 'తెలంగాణ & ఆంధ్రప్రదేశ్ ప్రధాన రాజకీయ పార్టీల జెండాలు ప్రచార ర్యాలీలో' : lang === 'hi' ? 'तेलंगाना और आंध्र प्रदेश के प्रमुख राजनीतिक दलों के झंडे एक अभियान रैली में' : 'Flags of major political parties of Telangana & Andhra Pradesh at a campaign rally'}">
+      <figcaption>${t('engage_note', lang)}</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -83,6 +103,22 @@ export function homePage(lang: Lang, settings: Record<string, string>, services:
       <h2>${lang === 'te' ? 'మీ రాజకీయ భవిష్యత్తు మాకు అత్యంత ముఖ్యం' : lang === 'hi' ? 'आपका राजनीतिक भविष्य हमारे लिए सर्वोपरि है' : 'Your political future is paramount to us'}</h2>
     </div>
     <div class="feature-grid">${whyCards}</div>
+  </div>
+</section>
+
+<section class="section engage-section" id="who-we-work-with">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow" style="justify-content:center;">${t('engage_eyebrow', lang)}</span>
+      <h2>${t('engage_title', lang)}</h2>
+      <p>${t('engage_sub', lang)}</p>
+    </div>
+    <figure class="engage-banner reveal">
+      <img src="/static/img/parties-ap.jpg" width="1024" height="576" loading="lazy" decoding="async"
+        alt="${lang === 'te' ? 'ఆంధ్రప్రదేశ్ ప్రధాన రాజకీయ పార్టీల జెండాలు — TDP, YSRCP, INC, జనసేన' : lang === 'hi' ? 'आंध्र प्रदेश के प्रमुख राजनीतिक दलों के झंडे — TDP, YSRCP, INC, जनसेना' : 'Flags of major political parties in Andhra Pradesh — TDP, YSRCP, INC and Jana Sena'}">
+    </figure>
+    <div class="audience-grid">${audienceCards}</div>
+    <p class="engage-note">${t('engage_note', lang)}</p>
   </div>
 </section>
 

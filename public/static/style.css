@@ -220,8 +220,57 @@ p { margin: 0 0 1rem; color: var(--text-dim); }
 .hero-trust .k i { color: var(--gold); }
 .hero-trust .v { font-size: .78rem; color: var(--text-faint); letter-spacing: .5px; }
 
+/* Hero split layout with non-partisan visual */
+.hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
+.hero.has-visual .hero-inner { max-width: 640px; }
+.hero-visual {
+  position: relative; z-index: 3; margin: 0;
+  border: 1px solid var(--gold-line); border-radius: 14px; overflow: hidden;
+  background: var(--black-2);
+  box-shadow: 0 30px 70px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(201,162,75,.06) inset;
+}
+.hero-visual img { display: block; width: 100%; height: auto; opacity: .95; }
+.hero-visual::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, transparent 55%, rgba(13,13,13,.55));
+}
+.hero-visual figcaption {
+  position: relative; z-index: 2; margin: 0; padding: 12px 16px;
+  font-size: .72rem; line-height: 1.5; color: var(--text-faint);
+  border-top: 1px solid var(--gold-line); background: rgba(13,13,13,.6);
+}
+
 /* Gold hairline divider */
 .hairline { height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); margin: 0 auto; }
+
+/* ---------- AUDIENCE / ENGAGEMENT ---------- */
+.engage-section { background: var(--black-2); }
+.engage-banner {
+  margin: 0 auto 48px; max-width: 760px; border: 1px solid var(--gold-line);
+  border-radius: 12px; overflow: hidden; background: var(--black);
+  box-shadow: 0 24px 60px -34px rgba(0,0,0,.85);
+}
+.engage-banner img { display: block; width: 100%; height: auto; }
+.audience-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.audience-card {
+  position: relative; padding: 32px 28px; border: 1px solid var(--gold-line);
+  border-left: 3px solid var(--gold); border-radius: 8px;
+  background: linear-gradient(160deg, rgba(201,162,75,.05), transparent 70%);
+  transition: transform .3s ease, border-color .3s ease, background .3s ease;
+}
+.audience-card:hover { transform: translateY(-6px); border-color: var(--gold-dim); border-left-color: var(--gold-bright); background: linear-gradient(160deg, rgba(201,162,75,.1), transparent 70%); }
+.audience-ico {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px; border-radius: 10px; margin-bottom: 18px;
+  border: 1px solid var(--gold-dim); color: var(--gold-bright); font-size: 1.2rem;
+  background: rgba(201,162,75,.06);
+}
+.audience-card h3 { font-size: 1.22rem; margin-bottom: 10px; color: var(--champagne); }
+.audience-card p { font-size: .92rem; color: var(--text-dim); margin: 0; }
+.engage-note {
+  margin: 40px auto 0; max-width: 760px; text-align: center;
+  font-size: .82rem; color: var(--text-faint); font-style: italic;
+}
 
 /* ---------- SERVICE CARDS ---------- */
 .section-head { text-align: center; max-width: 640px; margin: 0 auto 60px; }
@@ -429,9 +478,14 @@ p { margin: 0 0 1rem; color: var(--text-dim); }
 @media (max-width: 980px) {
   .services-grid, .blog-grid, .gallery-grid { grid-template-columns: repeat(2, 1fr); }
   .feature-grid, .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .audience-grid { grid-template-columns: repeat(2, 1fr); }
   .split, .contact-grid, .testi-grid { grid-template-columns: 1fr; gap: 40px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .hero-bg-star { opacity: .06; }
+  /* Stack hero: text first, then visual */
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero.has-visual .hero-inner { max-width: 100%; }
+  .hero-visual { max-width: 520px; }
 }
 
 /* ---------- MOBILE  (<= 768px) ---------- */
@@ -441,6 +495,10 @@ p { margin: 0 0 1rem; color: var(--text-dim); }
   .section { padding: 56px 0; }
   .section-sm { padding: 40px 0; }
   .section-head { margin-bottom: 40px; }
+  .audience-grid { grid-template-columns: 1fr; gap: 16px; }
+  .audience-card { padding: 26px 22px; }
+  .engage-banner { margin-bottom: 32px; }
+  .hero-visual figcaption { font-size: .68rem; }
 
   /* --- Header: keep it tight, no clutter --- */
   .site-header { padding: 12px 0; }

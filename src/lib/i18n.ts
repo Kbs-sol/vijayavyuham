@@ -66,6 +66,11 @@ export const T: Dict = {
   quick_enquiry: { en: 'Quick Enquiry', te: 'త్వరిత విచారణ', hi: 'त्वरित पूछताछ' },
   lang_prompt: { en: 'Choose your language', te: 'మీ భాషను ఎంచుకోండి', hi: 'अपनी भाषा चुनें' },
   lang_prompt_sub: { en: 'Read Vijayavyuham in the language you prefer', te: 'మీకు నచ్చిన భాషలో విజయవ్యూహం చదవండి', hi: 'अपनी पसंदीदा भाषा में विजयव्यूहम पढ़ें' },
+  // Audience / engagement section
+  engage_eyebrow: { en: 'Who We Work With', te: 'మేము ఎవరితో పని చేస్తాము', hi: 'हम किसके साथ काम करते हैं' },
+  engage_title: { en: 'Built for every kind of political engagement', te: 'ప్రతి రకమైన రాజకీయ నిమగ్నత కోసం రూపొందించబడింది', hi: 'हर तरह की राजनीतिक भागीदारी के लिए बनाया गया' },
+  engage_sub: { en: 'Non-partisan by design — we bring the same discipline to every party, candidate and cause across Telangana and Andhra Pradesh.', te: 'రూపకల్పన ద్వారా నిష్పక్షపాతం — తెలంగాణ మరియు ఆంధ్రప్రదేశ్‌లోని ప్రతి పార్టీ, అభ్యర్థి మరియు లక్ష్యానికి మేము అదే క్రమశిక్షణను తీసుకువస్తాము.', hi: 'डिज़ाइन से गैर-पक्षपाती — हम तेलंगाना और आंध्र प्रदेश के हर दल, उम्मीदवार और उद्देश्य के लिए समान अनुशासन लाते हैं।' },
+  engage_note: { en: 'We work with all parties and independents. Party symbols shown are for illustration only and imply no endorsement.', te: 'మేము అన్ని పార్టీలు మరియు స్వతంత్రులతో పని చేస్తాము. చూపిన పార్టీ గుర్తులు కేవలం ఉదాహరణ కోసం మాత్రమే.', hi: 'हम सभी दलों और निर्दलीयों के साथ काम करते हैं। दिखाए गए दल चिन्ह केवल उदाहरण के लिए हैं।' },
 };
 
 export function t(key: string, lang: Lang): string {
